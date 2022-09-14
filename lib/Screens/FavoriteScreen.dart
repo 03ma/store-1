@@ -53,7 +53,7 @@ class _FavoriteState extends State<FavoriteScreen> {
                         alignment: Alignment.center,
                         child: const Text('المفضلة',
                             style: TextStyle(
-                                color: Colors.black87,
+                                color: Colors.blue,
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold))),
                     // Product(Result[i], size, i)
@@ -134,8 +134,8 @@ class _FavoriteState extends State<FavoriteScreen> {
                     product['ProductName'],
                     textAlign: TextAlign.end,
                     style: const TextStyle(
-                        // color: Colors.black,
-                        fontSize: 18,
+                        color: Colors.blue,
+                        fontSize: 20,
                         fontWeight: FontWeight.w400),
                   ),
                 ),
@@ -187,7 +187,7 @@ class _FavoriteState extends State<FavoriteScreen> {
                     color: Colors.grey.withOpacity(0.3),
                     spreadRadius: 1,
                     blurRadius: 7,
-                    offset: const Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -195,7 +195,7 @@ class _FavoriteState extends State<FavoriteScreen> {
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
                   ProductImageUrl + product['ProductImage'],
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),

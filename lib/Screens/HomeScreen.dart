@@ -106,7 +106,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(width: size.getWidth() * 0.05),
                 ],
               ),
-              // SizedBox(height: size.getHeight() * 0.01),
               Container(
                   width: double.infinity,
                   child: SingleChildScrollView(
@@ -289,22 +288,25 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       items: images
           .map(
-            (item) => Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              width: size.getWidth() * 0.9,
-              height: size.getHeight() * 0.1,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(10.0),
+            (item) => InkWell(
+              onTap: (() {
+                print(item);
+              }),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: Image.network(
-                  item,
-                  fit: BoxFit.fill,
-                  // width: size.getWidth() * 0.9,
-                  // height: size.getHeight() * 0.2,
+                width: size.getWidth() * 0.9,
+                height: size.getHeight() * 0.1,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(10.0),
+                  ),
+                  child: Image.network(
+                    item,
+                    fit: BoxFit.fill,
+                  ),
                 ),
               ),
             ),

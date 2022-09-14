@@ -37,20 +37,3 @@ class MyApp extends StatelessWidget {
         home: const SafeArea(child: BottomNavigationBarScreen()));
   }
 }
-
-
-/**
- * 
- * SERVER STATE:Active	TRAFFIC:0.00 GB / 1,159.28 GB
-CPU:4	IP:45.61.53.48
-MEMORY:4 GB	SERVER USERNAME:root
-STORAGE:80 GB	PASSWORD:4Nt93XD6wZ18 
-SERVICE LEVEL AGREEMENT:	BACK-UP:
-
-
-
-git config --global user.email "Hamza.nazhan097@gmail.com"
-  git config --global user.name "HamzaDevLoL"
- */
-
-

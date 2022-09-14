@@ -61,33 +61,52 @@ class _ProductState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     var size = MSize(context);
-    return Scaffold(
-        body: SafeArea(
-      child: SingleChildScrollView(
+    return SafeArea(
+        child: Scaffold(
+      body: SingleChildScrollView(
           child: Column(
         children: [
-          Container(
-              width: size.getWidth(),
-              height: size.getHeight() * 0.4,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20)),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                      color: Colors.grey.withOpacity(0.4),
-                      blurRadius: 10.0,
-                      offset: const Offset(0, 0))
-                ],
+          Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              Container(
+                  width: size.getWidth(),
+                  height: size.getHeight() * 0.4,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.grey.withOpacity(0.4),
+                          blurRadius: 10.0,
+                          offset: const Offset(0, 0))
+                    ],
+                  ),
+                  child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20)),
+                      child: Image.network(
+                        ProductImageUrl + product['ProductImage'],
+                        fit: BoxFit.cover,
+                      ))),
+              Container(
+                margin: EdgeInsets.only(
+                    top: size.getHeight() * 0.02, left: size.getWidth() * 0.02),
+                width: 40,
+                height: 40,
+                // color: Colors.amber,
+                child: IconButton(
+                  onPressed: (() => Navigator.of(context).pop()),
+                  icon: Icon(
+                    Icons.arrow_back_ios_new,
+                    color: Colors.blue,
+                  ),
+                ),
               ),
-              child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20)),
-                  child: Image.network(
-                    ProductImageUrl + product['ProductImage'],
-                    fit: BoxFit.fill,
-                  ))),
+            ],
+          ),
           SizedBox(height: size.getHeight() * 0.02),
           Container(
             width: size.getWidth(),
@@ -139,20 +158,6 @@ class _ProductState extends State<ProductPage> {
                       color: Colors.blue,
                       fontSize: 23,
                       fontWeight: FontWeight.w500))),
-          // Container(
-          //     margin: EdgeInsets.only(top: size.getHeight() * 0.02),
-          //     width: size.getWidth() * 0.8,
-          //     height: size.getHeight() * 0.1,
-          //     decoration: BoxDecoration(
-          //         color: Colors.blue, borderRadius: BorderRadius.circular(6)),
-          //     alignment: Alignment.center,
-          //     child: const Text(
-          //       'المواصفات',
-          //       style: TextStyle(
-          //           color: Colors.white,
-          //           fontSize: 25,
-          //           fontWeight: FontWeight.bold),
-          //     )),
           SizedBox(height: size.getHeight() * 0.04),
           ColorsView(size),
           SizedBox(height: size.getHeight() * 0.03),
@@ -231,7 +236,7 @@ class _ProductState extends State<ProductPage> {
                           horizontal: size.getWidth() * 0.2),
                       height: size.getHeight() * 0.06,
                       decoration: BoxDecoration(
-                          color: const Color(0xFF00CA71),
+                          color: Colors.blue,
                           borderRadius: BorderRadius.circular(10)),
                       alignment: Alignment.center,
                       child: const Text('اغلاق',

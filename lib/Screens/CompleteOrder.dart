@@ -1,10 +1,11 @@
+import 'dart:convert';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:store/Constants/Server.dart';
 import 'package:store/Constants/Size.dart';
-import 'package:store/main.dart';
+import 'package:http/http.dart' as http;
 
 class CompleteOrder extends StatefulWidget {
   const CompleteOrder({Key? key}) : super(key: key);
@@ -18,14 +19,52 @@ class _CompleteOrderState extends State<CompleteOrder> {
   var Phone = '';
   var Address = '';
 
+  void MakeOrder() async {
+    final token = GetStorage();
+    var UserID = await token.read('USER_ID');
+    var box = await Hive.openBox('Carts');
+    var temp = await box.values.toList();
+    var Products = [];
+
+    for (var i = 0; i < temp.length; i++) {
+      var Color = [];
+      for (var j = 0; j < temp[i].length; j++) {
+        Color.add({"color": temp[i][j]['Color']});
+      }
+      Products.add({
+        "quantity": temp[i].length,
+        "ProductID": temp[i][0]['ID'].toString(),
+        "Colors": Color
+      });
+    }
+
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request('POST', Uri.parse(url + '/order/new'));
+    request.body = json.encode({
+      "buyerName": Name,
+      "buyerPhone": '0' + Phone,
+      "buyerAddress": Address,
+      "products": Products
+    });
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+    } else {
+      print(Uri.parse(url + '/order/new'));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MSize(context);
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          right: false,
-          left: false,
+    return SafeArea(
+      right: false,
+      left: false,
+      child: Scaffold(
+        body: SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -65,28 +104,70 @@ class _CompleteOrderState extends State<CompleteOrder> {
                         )
                       ])),
               SizedBox(height: size.getHeight() * 0.05),
-              Column(
+              Container(
+                width: size.getWidth() * 0.93,
+                height: size.getHeight() * 0.133,
+                child: TextFormField(
+                  onChanged: (value) => setState(() {
+                    Name = value;
+                  }),
+                  maxLength: 36,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                  ),
+                  decoration: InputDecoration(
+                    counterText: '',
+                    hintText: 'الاسم',
+                    hintStyle: const TextStyle(
+                        color: Colors.black45,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: const BorderSide(color: Colors.black54),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.1),
+                      borderSide:
+                          const BorderSide(color: Colors.blue, width: 1.2),
+                    ),
+                    labelStyle: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: size.getHeight() * 0.05),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(
+                    width: size.getWidth() * 0.035,
+                  ),
                   Container(
-                    width: size.getWidth() * 0.93,
+                    width: size.getWidth() * 0.71,
                     height: size.getHeight() * 0.133,
                     child: TextFormField(
+                      // textAlign: TextAlign.end,
                       onChanged: (value) => setState(() {
-                        Name = value;
+                        Phone = value;
                       }),
-                      maxLength: 36,
+                      maxLength: 10,
+                      keyboardType: TextInputType.number,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 24,
                       ),
                       decoration: InputDecoration(
                         counterText: '',
-                        hintText: 'الاسم',
+                        hintText: 'رقم الهاتف',
                         hintStyle: const TextStyle(
-                            color: Colors.black45,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                          color: Colors.black45,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: const BorderSide(color: Colors.black54),
@@ -104,74 +185,6 @@ class _CompleteOrderState extends State<CompleteOrder> {
                     ),
                   ),
                   Container(
-                      margin: EdgeInsets.only(right: size.getWidth() * 0.01),
-                      child: Text(
-                        '${Name.length}/36',
-                        style: const TextStyle(
-                            color: Colors.black54, fontSize: 16),
-                      ))
-                ],
-              ),
-              SizedBox(height: size.getHeight() * 0.05),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: size.getWidth() * 0.035,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: size.getWidth() * 0.71,
-                        height: size.getHeight() * 0.133,
-                        child: TextFormField(
-                          // textAlign: TextAlign.end,
-                          onChanged: (value) => setState(() {
-                            Phone = value;
-                          }),
-                          maxLength: 11,
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 24,
-                          ),
-                          decoration: InputDecoration(
-                            counterText: '',
-                            hintText: 'رقم الهاتف',
-                            hintStyle: const TextStyle(
-                              color: Colors.black45,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide:
-                                  const BorderSide(color: Colors.black54),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.1),
-                              borderSide: const BorderSide(
-                                  color: Colors.blue, width: 1.2),
-                            ),
-                            labelStyle: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                          margin:
-                              EdgeInsets.only(right: size.getWidth() * 0.01),
-                          child: Text(
-                            '${Phone.length}/11',
-                            style: const TextStyle(
-                                color: Colors.black54, fontSize: 16),
-                          ))
-                    ],
-                  ),
-                  Container(
                     margin: EdgeInsets.symmetric(
                         horizontal: size.getWidth() * 0.03),
                     width: size.getWidth() * 0.19,
@@ -179,10 +192,10 @@ class _CompleteOrderState extends State<CompleteOrder> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: const Border(
-                        right: BorderSide(color: Colors.black54, width: 1.5),
-                        left: BorderSide(color: Colors.black54, width: 1.5),
-                        top: BorderSide(color: Colors.black54, width: 1.5),
-                        bottom: BorderSide(color: Colors.black54, width: 1.5),
+                        right: BorderSide(color: Colors.black54, width: 1.2),
+                        left: BorderSide(color: Colors.black54, width: 1.2),
+                        top: BorderSide(color: Colors.black54, width: 1.2),
+                        bottom: BorderSide(color: Colors.black54, width: 1.2),
                       ),
                     ),
                     alignment: Alignment.center,
@@ -247,20 +260,57 @@ class _CompleteOrderState extends State<CompleteOrder> {
                 ],
               ),
               SizedBox(height: size.getHeight() * 0.05),
-              Container(
-                width: size.getWidth() * 0.4,
-                height: size.getHeight() * 0.085,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                alignment: Alignment.center,
-                child: const Text(
-                  'شراء',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w500,
+              InkWell(
+                onTap: (() {
+                  if (Phone.length == 10 &&
+                      Name.length > 3 &&
+                      Address.length > 6) {
+                    MakeOrder();
+                  } else {
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.error,
+                      headerAnimationLoop: false,
+                      animType: AnimType.TOPSLIDE,
+                      title: 'يرجى ادخال المعلومات كاملة',
+                      dismissOnTouchOutside: false,
+                      btnOkText: 'اغلاق',
+                      btnOk: InkWell(
+                        onTap: (() => Navigator.pop(context)),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: size.getWidth() * 0.2),
+                          height: size.getHeight() * 0.06,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(10)),
+                          alignment: Alignment.center,
+                          child: const Text('اغلاق',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      btnOkOnPress: () {},
+                    ).show();
+                  }
+                }),
+                child: Container(
+                  width: size.getWidth() * 0.4,
+                  height: size.getHeight() * 0.085,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'شراء',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 26,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               )
