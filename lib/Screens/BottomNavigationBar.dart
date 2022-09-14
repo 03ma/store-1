@@ -90,7 +90,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarScreen> {
     return Scaffold(
       body: isLoaded
           ? [
-              HomeScreen(HomeResponse),
+              HomeScreen(HomeResponse, Products),
               FavoriteScreen(Products, UserID),
               CartScreen(Products),
             ][_selectedIndex]

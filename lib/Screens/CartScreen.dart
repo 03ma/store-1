@@ -128,13 +128,33 @@ class _CartScreenState extends State<CartScreen> {
                                       )
                                     ])),
                             for (var i = 0; i < Result.length; i++)
-                              Container(
-                                height: size.getHeight() * 0.18,
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: size.getWidth() * 0.05,
-                                    vertical: size.getHeight() * 0.01),
-                                width: size.getWidth() * 0.9,
-                                child: ProductWidget(Result[i], size),
+                              InkWell(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return SingleChildScrollView(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Container(
+                                                width: size.getWidth(),
+                                                alignment: Alignment.center,
+                                                child: Text('Hi'),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      });
+                                },
+                                child: Container(
+                                  height: size.getHeight() * 0.18,
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: size.getWidth() * 0.05,
+                                      vertical: size.getHeight() * 0.01),
+                                  width: size.getWidth() * 0.9,
+                                  child: ProductWidget(Result[i], size),
+                                ),
                               ),
                             InkWell(
                               onTap: () {

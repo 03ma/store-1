@@ -8,9 +8,10 @@ import 'package:store/Screens/Product.dart';
 
 class HomeScreen extends StatefulWidget {
   var res;
-  HomeScreen(this.res);
+  var Products;
+  HomeScreen(this.res, this.Products);
   @override
-  State<HomeScreen> createState() => _HomeScreenState(res);
+  State<HomeScreen> createState() => _HomeScreenState(res, Products);
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -21,7 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
   var activePage = 0;
 
   var res;
-  _HomeScreenState(this.res);
+  var Products;
+
+  _HomeScreenState(this.res, this.Products);
   bool _on = true;
 
   var DollarPrice = 1480;
@@ -57,8 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                CategoryScreen(res['Categories'][i])));
+                            builder: (context) => CategoryScreen(
+                                res['Categories'][i], Products)));
                   },
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
