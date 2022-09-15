@@ -43,56 +43,55 @@ class _FavoriteState extends State<FavoriteScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: (Result != null)
-            ? (Result.length != 0)
-                ? SingleChildScrollView(
-                    child: Column(children: [
-                    SizedBox(height: size.getHeight() * 0.01),
-                    Container(
-                        height: size.getHeight() * 0.0555,
-                        width: size.getWidth(),
-                        alignment: Alignment.center,
-                        child: const Text('المفضلة',
-                            style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold))),
-                    // Product(Result[i], size, i)
-                    Column(
-                      children: [
-                        for (var i = 0; i < Result.length; i++)
-                          Container(
-                              height: size.getHeight() * 0.18,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: size.getWidth() * 0.05,
-                                  vertical: size.getHeight() * 0.01),
-                              width: size.getWidth() * 0.9,
-                              child: Product(Result[i], size, i))
-                      ],
-                    )
-                  ]))
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: size.getHeight() * 0.23,
-                        width: size.getWidth(),
-                      ),
-                      Image.asset(
-                        'assets/images/brokenHeart.png',
-                        height: size.getHeight() * 0.23,
-                        width: size.getWidth() * 0.6,
-                      ),
-                      SizedBox(height: size.getHeight() * 0.02),
-                      const Text(
-                        "لا توجد منتجات في المفضلة",
-                        textAlign: TextAlign.center,
+            ? SingleChildScrollView(
+                child: Column(children: [
+                Container(
+                    height: size.getHeight() * 0.1,
+                    width: size.getWidth(),
+                    alignment: Alignment.center,
+                    child: const Text('المفضلة',
                         style: TextStyle(
-                            fontSize: 26,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
+                            color: Colors.blue,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500))),
+                // Product(Result[i], size, i)
+                (Result.length != 0)
+                    ? Column(
+                        children: [
+                          for (var i = 0; i < Result.length; i++)
+                            Container(
+                                height: size.getHeight() * 0.18,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: size.getWidth() * 0.05,
+                                    vertical: size.getHeight() * 0.01),
+                                width: size.getWidth() * 0.9,
+                                child: Product(Result[i], size, i))
+                        ],
                       )
-                    ],
-                  )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: size.getHeight() * 0.1,
+                            width: size.getWidth(),
+                          ),
+                          Image.asset(
+                            'assets/images/brokenHeart.png',
+                            height: size.getHeight() * 0.3,
+                            width: size.getWidth(),
+                          ),
+                          SizedBox(height: size.getHeight() * 0.07),
+                          const Text(
+                            "لا توجد منتجات في المفضلة",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 22,
+                                color: Color.fromRGBO(158, 158, 158, 1),
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      )
+              ]))
             : const Center(child: CircularProgressIndicator()));
   }
 
@@ -147,6 +146,7 @@ class _FavoriteState extends State<FavoriteScreen> {
                     child: Row(
                       children: [
                         Container(
+                          alignment: Alignment.centerRight,
                           width: (size.getWidth() -
                                   size.getWidth() * 0.1 -
                                   size.getWidth() * 0.37) *

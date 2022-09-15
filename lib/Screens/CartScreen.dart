@@ -6,6 +6,7 @@ import 'package:store/Constants/Server.dart';
 import 'package:store/Constants/Size.dart';
 import 'package:store/Screens/CompleteOrder.dart';
 import 'package:store/Screens/HomeScreen.dart';
+import 'package:store/Screens/Orders.dart';
 
 class CartScreen extends StatefulWidget {
   var Products;
@@ -128,13 +129,21 @@ class _CartScreenState extends State<CartScreen> {
                             width: size.getWidth() * 0.3,
                             height: size.getHeight() * 0.05,
                             child: Row(children: [
-                              Container(
-                                  height: size.getHeight() * 0.05,
-                                  width: size.getWidth() * 0.1,
-                                  child: SvgPicture.asset(
-                                    'assets/icons/truck.svg',
-                                    color: Colors.black,
-                                  )),
+                              InkWell(
+                                child: Container(
+                                    height: size.getHeight() * 0.05,
+                                    width: size.getWidth() * 0.1,
+                                    child: SvgPicture.asset(
+                                      'assets/icons/truck.svg',
+                                      color: Colors.black,
+                                    )),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Orders()));
+                                },
+                              ),
                               SizedBox(width: size.getWidth() * 0.02),
                               Container(
                                   height: size.getHeight() * 0.04,

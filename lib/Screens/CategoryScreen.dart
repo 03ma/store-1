@@ -82,9 +82,14 @@ class CcategoryScreenState extends State<CategoryScreen> {
                     (result.length == 0)
                         ? Column(
                             children: [
+                              SizedBox(
+                                height: size.getHeight() * 0.14,
+                              ),
                               Container(
                                 child: Image.asset(
-                                    'assets/images/CategoryEmpety.png'),
+                                  'assets/images/CategoryEmpety.png',
+                                  height: size.getHeight() * 0.33,
+                                ),
                               ),
                               SizedBox(
                                 height: size.getHeight() * 0.03,
@@ -96,10 +101,9 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                   "لا يوجد منتجات لصالح هذه الشركة في الوقت الحالي",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 26,
-                                  ),
+                                      fontSize: 22,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold),
                                 ),
                               )
                             ],
