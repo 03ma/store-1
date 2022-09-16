@@ -22,7 +22,7 @@ class BottomNavigationBarScreen extends StatefulWidget {
 class _BottomNavigationBarState extends State<BottomNavigationBarScreen> {
   String TokenGnreate(length) {
     const _chars =
-        'AaBbCc/#/#/D@@#!dEeFfG!Pp#QFqRr@Ss#TtUuVvWwXxYyZz1234SASDAD>//....567890';
+        'AaBbCcDdEeFfGdsadaxccvdfdgsdreqeghjghjmkluiPpQFqRrSsTtUuVvWwXxYyZz1234567890';
     Random _rnd = Random();
 
     return String.fromCharCodes(Iterable.generate(
@@ -89,11 +89,12 @@ class _BottomNavigationBarState extends State<BottomNavigationBarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: isLoaded
-          ? [
+          ? SafeArea(
+              child: [
               HomeScreen(HomeResponse, Products),
               FavoriteScreen(Products, UserID),
               CartScreen(Products),
-            ][_selectedIndex]
+            ][_selectedIndex])
           : const Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,

@@ -6,6 +6,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:store/Constants/Server.dart';
 import 'package:store/Constants/Size.dart';
 import 'package:http/http.dart' as http;
+import 'package:store/Screens/BottomNavigationBar.dart';
 
 class CompleteOrder extends StatefulWidget {
   const CompleteOrder({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
   var Name = '';
   var Phone = '';
   var Address = '';
+  var isCompleted = false;
 
   void MakeOrder() async {
     final token = GetStorage();
@@ -37,13 +39,13 @@ class _CompleteOrderState extends State<CompleteOrder> {
         "Colors": Color
       });
     }
-
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request('POST', Uri.parse(url + '/order/new'));
     request.body = json.encode({
       "buyerName": Name,
       "buyerPhone": '0' + Phone,
       "buyerAddress": Address,
+      'buyerId': UserID,
       "products": Products
     });
     request.headers.addAll(headers);
@@ -59,6 +61,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var size = MSize(context);
     return SafeArea(
       right: false,
@@ -76,10 +79,10 @@ class _CompleteOrderState extends State<CompleteOrder> {
                         Container(
                           margin:
                               EdgeInsets.only(right: size.getWidth() * 0.05),
-                          child: const Text('اكمال الطلب',
+                          child: Text('اكمال الطلب',
                               style: TextStyle(
                                   color: Colors.blue,
-                                  fontSize: 24,
+                                  fontSize: 24 * textScaleFactor,
                                   fontWeight: FontWeight.w500)),
                         ),
                         Container(
@@ -97,7 +100,15 @@ class _CompleteOrderState extends State<CompleteOrder> {
                                         color: Colors.blue,
                                       ),
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        if (!isCompleted)
+                                          Navigator.pop(context);
+                                        else
+                                          Navigator.of(context).pushAndRemoveUntil(
+                                              MaterialPageRoute(
+                                                  builder: (context) => SafeArea(
+                                                      child:
+                                                          BottomNavigationBarScreen())),
+                                              (Route<dynamic> route) => false);
                                       }),
                                 )
                               ]),
@@ -112,17 +123,17 @@ class _CompleteOrderState extends State<CompleteOrder> {
                     Name = value;
                   }),
                   maxLength: 36,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.black,
-                    fontSize: 24,
+                    fontSize: 24 * textScaleFactor,
                   ),
                   decoration: InputDecoration(
                     counterText: '',
                     hintText: 'الاسم',
-                    hintStyle: const TextStyle(
+                    hintStyle: TextStyle(
                         color: Colors.black45,
                         fontWeight: FontWeight.bold,
-                        fontSize: 20),
+                        fontSize: 20 * textScaleFactor),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: const BorderSide(color: Colors.black54),
@@ -132,83 +143,85 @@ class _CompleteOrderState extends State<CompleteOrder> {
                       borderSide:
                           const BorderSide(color: Colors.blue, width: 1.2),
                     ),
-                    labelStyle: const TextStyle(
+                    labelStyle: TextStyle(
                       color: Colors.grey,
-                      fontSize: 15,
+                      fontSize: 15 * textScaleFactor,
                     ),
                   ),
                 ),
               ),
               SizedBox(height: size.getHeight() * 0.05),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: size.getWidth() * 0.035,
-                  ),
-                  Container(
-                    width: size.getWidth() * 0.71,
-                    height: size.getHeight() * 0.133,
-                    child: TextFormField(
-                      // textAlign: TextAlign.end,
-                      onChanged: (value) => setState(() {
-                        Phone = value;
-                      }),
-                      maxLength: 10,
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 24,
-                      ),
-                      decoration: InputDecoration(
-                        counterText: '',
-                        hintText: 'رقم الهاتف',
-                        hintStyle: const TextStyle(
-                          color: Colors.black45,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+              Container(
+                height: size.getHeight() * 0.133,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: size.getWidth() * 0.035,
+                    ),
+                    Container(
+                      width: size.getWidth() * 0.71,
+                      height: size.getHeight() * 0.1,
+                      child: TextFormField(
+                        onChanged: (value) => setState(() {
+                          Phone = value;
+                        }),
+                        maxLength: 10,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24 * textScaleFactor,
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: const BorderSide(color: Colors.black54),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.1),
-                          borderSide:
-                              const BorderSide(color: Colors.blue, width: 1.2),
-                        ),
-                        labelStyle: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
+                        decoration: InputDecoration(
+                          counterText: '',
+                          hintText: 'رقم الهاتف',
+                          hintStyle: TextStyle(
+                            color: Colors.black45,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20 * textScaleFactor,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: const BorderSide(color: Colors.black54),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.1),
+                            borderSide: const BorderSide(
+                                color: Colors.blue, width: 1.2),
+                          ),
+                          labelStyle: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15 * textScaleFactor,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: size.getWidth() * 0.03),
-                    width: size.getWidth() * 0.19,
-                    height: size.getHeight() * 0.113,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      border: const Border(
-                        right: BorderSide(color: Colors.black54, width: 1.2),
-                        left: BorderSide(color: Colors.black54, width: 1.2),
-                        top: BorderSide(color: Colors.black54, width: 1.2),
-                        bottom: BorderSide(color: Colors.black54, width: 1.2),
+                    Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: size.getWidth() * 0.03),
+                      width: size.getWidth() * 0.19,
+                      height: size.getHeight() * 0.1,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        border: const Border(
+                          right: BorderSide(color: Colors.black54, width: 1.2),
+                          left: BorderSide(color: Colors.black54, width: 1.2),
+                          top: BorderSide(color: Colors.black54, width: 1.2),
+                          bottom: BorderSide(color: Colors.black54, width: 1.2),
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        '+964',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 22 * textScaleFactor,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      '+964',
-                      style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(height: size.getHeight() * 0.05),
               Column(
@@ -223,17 +236,17 @@ class _CompleteOrderState extends State<CompleteOrder> {
                       }),
                       maxLength: 180,
                       maxLines: 3,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.black,
-                        fontSize: 24,
+                        fontSize: 24 * textScaleFactor,
                       ),
                       decoration: InputDecoration(
                         counterText: '',
                         hintText: 'العنوان',
-                        hintStyle: const TextStyle(
+                        hintStyle: TextStyle(
                             color: Colors.black45,
                             fontWeight: FontWeight.bold,
-                            fontSize: 20),
+                            fontSize: 20 * textScaleFactor),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: const BorderSide(color: Colors.black54),
@@ -243,9 +256,9 @@ class _CompleteOrderState extends State<CompleteOrder> {
                           borderSide:
                               const BorderSide(color: Colors.blue, width: 1.2),
                         ),
-                        labelStyle: const TextStyle(
+                        labelStyle: TextStyle(
                           color: Colors.grey,
-                          fontSize: 15,
+                          fontSize: 15 * textScaleFactor,
                         ),
                       ),
                     ),
@@ -254,19 +267,61 @@ class _CompleteOrderState extends State<CompleteOrder> {
                       margin: EdgeInsets.only(right: size.getWidth() * 0.01),
                       child: Text(
                         '${Address.length}/180',
-                        style: const TextStyle(
-                            color: Colors.black54, fontSize: 16),
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontSize: 16 * textScaleFactor,
+                        ),
                       ))
                 ],
               ),
               SizedBox(height: size.getHeight() * 0.05),
               InkWell(
-                onTap: (() {
+                onTap: (() async {
                   if (Phone.length == 10 &&
                       Name.length > 3 &&
-                      Address.length > 6) {
+                      Address.length > 6 &&
+                      !isCompleted) {
                     MakeOrder();
-                  } else {
+                    isCompleted = true;
+                    var box = await Hive.openBox('Carts');
+                    box.clear();
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.SUCCES,
+                      headerAnimationLoop: false,
+                      animType: AnimType.TOPSLIDE,
+                      title: 'تم ارسال طلبك',
+                      desc: 'سيتم الاتصال بك في اقرب وقت',
+                      dismissOnTouchOutside: false,
+                      btnOk: WillPopScope(
+                          onWillPop: () async {
+                            return false;
+                          },
+                          child: InkWell(
+                            onTap: (() => Navigator.of(context)
+                                .pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => SafeArea(
+                                            child:
+                                                BottomNavigationBarScreen())),
+                                    (Route<dynamic> route) => false)),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(
+                                  horizontal: size.getWidth() * 0.2),
+                              height: size.getHeight() * 0.06,
+                              decoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  borderRadius: BorderRadius.circular(10)),
+                              alignment: Alignment.center,
+                              child: Text('اغلاق',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24 * textScaleFactor,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          )),
+                    ).show();
+                  } else if (!isCompleted) {
                     AwesomeDialog(
                       context: context,
                       dialogType: DialogType.error,
@@ -285,10 +340,38 @@ class _CompleteOrderState extends State<CompleteOrder> {
                               color: Colors.blue,
                               borderRadius: BorderRadius.circular(10)),
                           alignment: Alignment.center,
-                          child: const Text('اغلاق',
+                          child: Text('اغلاق',
                               style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 24,
+                                  fontSize: 24 * textScaleFactor,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      btnOkOnPress: () {},
+                    ).show();
+                  } else {
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.error,
+                      headerAnimationLoop: false,
+                      animType: AnimType.TOPSLIDE,
+                      title: 'حدث خطأ ما',
+                      dismissOnTouchOutside: false,
+                      btnOkText: 'اغلاق',
+                      btnOk: InkWell(
+                        onTap: (() => Navigator.pop(context)),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: size.getWidth() * 0.2),
+                          height: size.getHeight() * 0.06,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(10)),
+                          alignment: Alignment.center,
+                          child: Text('اغلاق',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24 * textScaleFactor,
                                   fontWeight: FontWeight.bold)),
                         ),
                       ),
@@ -304,11 +387,11 @@ class _CompleteOrderState extends State<CompleteOrder> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   alignment: Alignment.center,
-                  child: const Text(
+                  child: Text(
                     'شراء',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 26,
+                      fontSize: 26 * textScaleFactor,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -319,5 +402,14 @@ class _CompleteOrderState extends State<CompleteOrder> {
         ),
       ),
     );
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

@@ -60,6 +60,8 @@ class _ProductState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
+
     var size = MSize(context);
     return SafeArea(
         child: Scaffold(
@@ -73,6 +75,7 @@ class _ProductState extends State<ProductPage> {
                   width: size.getWidth(),
                   height: size.getHeight() * 0.4,
                   decoration: BoxDecoration(
+                    color: Colors.white,
                     borderRadius: const BorderRadius.only(
                         bottomLeft: Radius.circular(20),
                         bottomRight: Radius.circular(20)),
@@ -89,7 +92,7 @@ class _ProductState extends State<ProductPage> {
                           bottomRight: Radius.circular(20)),
                       child: Image.network(
                         ProductImageUrl + product['ProductImage'],
-                        fit: BoxFit.cover,
+                        fit: BoxFit.contain,
                       ))),
               Container(
                 margin: EdgeInsets.only(
@@ -142,9 +145,9 @@ class _ProductState extends State<ProductPage> {
                     padding: EdgeInsets.only(left: size.getWidth() * 0.02),
                     child: Text(product['ProductName'].toString(),
                         textAlign: TextAlign.end,
-                        style: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 23,
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 23 * textScaleFactor,
                             fontWeight: FontWeight.w500)))
               ],
             ),
@@ -154,32 +157,51 @@ class _ProductState extends State<ProductPage> {
               padding: EdgeInsets.only(left: size.getWidth() * 0.02),
               child: Text(Price(product['ProductPrice'].toString()) + ' \$',
                   textAlign: TextAlign.end,
-                  style: const TextStyle(
-                      color: Colors.blue,
-                      fontSize: 23,
-                      fontWeight: FontWeight.w500))),
+                  style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 21 * textScaleFactor,
+                      fontWeight: FontWeight.w400))),
           SizedBox(height: size.getHeight() * 0.04),
           ColorsView(size),
           SizedBox(height: size.getHeight() * 0.03),
-          Properties(size, 'دقة الشاشة', 'ScreenResolution'),
+          Properties(
+            size,
+            'دقة الشاشة',
+            'ScreenResolution',
+            textScaleFactor,
+          ),
           SizedBox(height: size.getHeight() * 0.03),
-          Properties(size, 'منفذ الشحن', 'ChargerPort'),
+          Properties(
+            size,
+            'منفذ الشحن',
+            'ChargerPort',
+            textScaleFactor,
+          ),
           SizedBox(height: size.getHeight() * 0.03),
-          Properties(size, 'المعالج', 'Cpu'),
+          Properties(
+            size,
+            'المعالج',
+            'Cpu',
+            textScaleFactor,
+          ),
           SizedBox(height: size.getHeight() * 0.03),
-          Properties(size, 'منفذ تخزين', 'Memory',
+          Properties(size, 'منفذ تخزين', 'Memory', textScaleFactor,
               secendValue: 'ExternalMemory'),
           SizedBox(height: size.getHeight() * 0.03),
-          Properties(size, 'دقة الكاميرا الامامية', 'FrontCamera',
+          Properties(
+              size, 'دقة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
               secendValue: 'CamaraQuality'),
           SizedBox(height: size.getHeight() * 0.03),
-          Properties(size, 'جودة الكاميرا الامامية', 'FrontCamera',
+          Properties(
+              size, 'جودة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
               secendValue: 'VideoResolution'),
           SizedBox(height: size.getHeight() * 0.03),
-          Properties(size, 'دقة الكاميرا الخلفية', 'BackCamera',
+          Properties(
+              size, 'دقة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
               secendValue: 'CamaraQuality'),
           SizedBox(height: size.getHeight() * 0.03),
-          Properties(size, 'جودة الكاميرا الخلفية', 'BackCamera',
+          Properties(
+              size, 'جودة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
               secendValue: 'VideoResolution'),
           SizedBox(height: size.getHeight() * 0.03),
           InkWell(
@@ -203,10 +225,10 @@ class _ProductState extends State<ProductPage> {
                           color: Colors.redAccent,
                           borderRadius: BorderRadius.circular(10)),
                       alignment: Alignment.center,
-                      child: const Text('اغلاق',
+                      child: Text('اغلاق',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24,
+                              fontSize: 24 * textScaleFactor,
                               fontWeight: FontWeight.bold)),
                     ),
                   ),
@@ -239,10 +261,10 @@ class _ProductState extends State<ProductPage> {
                           color: Colors.blue,
                           borderRadius: BorderRadius.circular(10)),
                       alignment: Alignment.center,
-                      child: const Text('اغلاق',
+                      child: Text('اغلاق',
                           style: TextStyle(
                               color: Colors.white,
-                              fontSize: 24,
+                              fontSize: 24 * textScaleFactor,
                               fontWeight: FontWeight.bold)),
                     ),
                   ),
@@ -259,11 +281,11 @@ class _ProductState extends State<ProductPage> {
                     color: Colors.blue,
                     borderRadius: BorderRadius.circular(10)),
                 alignment: Alignment.center,
-                child: const Text(
+                child: Text(
                   'اضف الى السلة',
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 25,
+                      fontSize: 25 * textScaleFactor,
                       fontWeight: FontWeight.bold),
                 )),
           ),
@@ -319,7 +341,7 @@ class _ProductState extends State<ProductPage> {
     );
   }
 
-  Widget Properties(size, key, value, {secendValue}) {
+  Widget Properties(size, key, value, textScaleFactor, {secendValue}) {
     return Column(
       children: [
         Row(
@@ -329,9 +351,9 @@ class _ProductState extends State<ProductPage> {
               width: size.getWidth() * 0.4,
               padding: EdgeInsets.symmetric(horizontal: size.getWidth() * 0.02),
               child: Text(key,
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: Colors.black,
-                      fontSize: 24,
+                      fontSize: 22 * double.parse(textScaleFactor.toString()),
                       fontWeight: FontWeight.w600)),
             ),
             Container(
@@ -346,9 +368,9 @@ class _ProductState extends State<ProductPage> {
                               ? 'نعم'
                               : 'لا يوجد'
                           : product[value][secendValue].toString(),
-                  style: const TextStyle(
+                  style: TextStyle(
                       color: Colors.black54,
-                      fontSize: 20,
+                      fontSize: 18 * double.parse(textScaleFactor.toString()),
                       fontWeight: FontWeight.w600)),
             ),
           ],

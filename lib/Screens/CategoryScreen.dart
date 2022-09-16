@@ -38,9 +38,11 @@ class CcategoryScreenState extends State<CategoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var size = MSize(context);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: (isLoaded)
             ? SingleChildScrollView(
                 child: Column(
@@ -59,7 +61,7 @@ class CcategoryScreenState extends State<CategoryScreen> {
                               category['CategoryName'],
                               style: TextStyle(
                                   color: Colors.blue,
-                                  fontSize: 24,
+                                  fontSize: 24 * textScaleFactor,
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
@@ -101,29 +103,35 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                   "لا يوجد منتجات لصالح هذه الشركة في الوقت الحالي",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      fontSize: 22,
+                                      fontSize: 22 * textScaleFactor,
                                       color: Colors.grey,
                                       fontWeight: FontWeight.bold),
                                 ),
                               )
                             ],
                           )
-                        : GridView.custom(
+                        : GridView(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             // scrollDirection: Axis.vertical,
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2),
-                            childrenDelegate: SliverChildListDelegate(
-                              [
-                                for (var i = 0; i < result.length; i++)
-                                  Container(
+                              crossAxisCount: 2,
+                              childAspectRatio:
+                                  size.getWidth() / (size.getHeight() / 1.5),
+                            ),
+
+                            children: [
+                              for (var i = 0; i < result.length; i++)
+                                Card(
+                                  elevation: 0,
+                                  shadowColor: Colors.white,
+                                  color: Colors.white,
+                                  child: Container(
                                       margin: EdgeInsets.symmetric(
                                           horizontal: size.getWidth() * 0.02,
                                           vertical: size.getHeight() * 0.01),
                                       width: size.getWidth() * 0.36,
-                                      height: size.getHeight() * 0.33,
                                       decoration: BoxDecoration(
                                         color: ProductColor,
                                         borderRadius: BorderRadius.circular(10),
@@ -145,20 +153,33 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                         child: Column(
                                           children: [
                                             Container(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(10),
+                                                    topRight:
+                                                        Radius.circular(10),
+                                                  ),
+                                                ),
                                                 child: ClipRRect(
-                                              borderRadius: const BorderRadius
-                                                      .only(
-                                                  topLeft: Radius.circular(10),
-                                                  topRight: Radius.circular(
-                                                      10)), //add border radius
-                                              child: Image.network(
-                                                ProductImageUrl +
-                                                    result[i]["ProductImage"],
-                                                height: size.getHeight() * 0.2,
-                                                width: size.getWidth(),
-                                                fit: BoxFit.cover,
-                                              ),
-                                            )),
+                                                  borderRadius: const BorderRadius
+                                                          .only(
+                                                      topLeft:
+                                                          Radius.circular(10),
+                                                      topRight: Radius.circular(
+                                                          10)), //add border radius
+                                                  child: Image.network(
+                                                    ProductImageUrl +
+                                                        result[i]
+                                                            ["ProductImage"],
+                                                    height:
+                                                        size.getHeight() * 0.2,
+                                                    width: size.getWidth(),
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                )),
                                             SizedBox(
                                               height: size.getHeight() * 0.01,
                                             ),
@@ -170,10 +191,12 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                                 result[i]["ProductName"],
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
-                                                    height: 1.3,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: size.getHeight() *
-                                                        0.024),
+                                                  color: Colors.blue,
+                                                  height: 1.3,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize:
+                                                      18 * textScaleFactor,
+                                                ),
                                               ),
                                             ),
                                             SizedBox(
@@ -187,19 +210,20 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                                 (Price(result[i]['ProductPrice']
                                                         .toString()) +
                                                     ' \$'),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     color: Colors.black54,
-                                                    fontSize: 14,
+                                                    fontSize:
+                                                        14 * textScaleFactor,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ))
-                              ],
-                            ),
-                          )
+                                      )),
+                                )
+                            ],
+                          ),
                   ],
                 ),
               )

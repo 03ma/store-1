@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var size = MSize(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -77,21 +78,22 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(width: size.getWidth() * 0.05),
                   Container(
-                    width: size.getWidth() * 0.3,
+                    margin: EdgeInsets.only(right: size.getWidth() * 0.05),
+                    // width: size.getWidth() * 0.3,
                     child: Text(
-                      'الاكثر مبيعاً',
+                      'اخر المنتجات',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: size.getWidth() * 0.06,
-                      ),
+                          fontSize: 22 * textScaleFactor,
+                          fontWeight: FontWeight.w600),
                     ),
                   ),
-                  const Spacer(),
                   InkWell(
                     child: Container(
+                        margin: EdgeInsets.only(left: size.getWidth() * 0.05),
                         width: 30,
                         height: 30,
                         child: (_on)
@@ -103,7 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                     },
                   ),
-                  SizedBox(width: size.getWidth() * 0.05),
                 ],
               ),
               Container(
@@ -115,12 +116,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             SizedBox(width: size.getWidth() * 0.05),
-                            for (var i = 0; i < res['topSell'].length; i++)
+                            for (var i = 0;
+                                i < res['latestProduct'].length;
+                                i++)
                               Container(
                                   margin: EdgeInsets.symmetric(
                                       horizontal: size.getWidth() * 0.02,
                                       vertical: size.getHeight() * 0.02),
-                                  width: size.getWidth() * 0.36,
+                                  width: size.getWidth() * 0.4,
                                   height: size.getHeight() * 0.25,
                                   decoration: BoxDecoration(
                                     color: ProductColor,
@@ -137,25 +140,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => ProductPage(
-                                                  res['topSell'][i])),
+                                                  res['latestProduct'][i])),
                                         )),
                                     child: Column(
                                       children: [
                                         Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(10),
+                                                      topRight:
+                                                          Radius.circular(10)),
+                                              color: Colors.white,
+                                            ),
                                             child: ClipRRect(
-                                          borderRadius: const BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              topRight: Radius.circular(
-                                                  10)), //add border radius
-                                          child: Image.network(
-                                            ProductImageUrl +
-                                                res['topSell'][i]
-                                                    ["ProductImage"],
-                                            height: size.getHeight() * 0.16,
-                                            width: size.getWidth(),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        )),
+                                              borderRadius: const BorderRadius
+                                                      .only(
+                                                  topLeft: Radius.circular(10),
+                                                  topRight: Radius.circular(
+                                                      10)), //add border radius
+                                              child: Image.network(
+                                                ProductImageUrl +
+                                                    res['latestProduct'][i]
+                                                        ["ProductImage"],
+                                                height: size.getHeight() * 0.16,
+                                                width: size.getWidth(),
+                                                fit: BoxFit.contain,
+                                              ),
+                                            )),
                                         SizedBox(
                                           height: size.getHeight() * 0.01,
                                         ),
@@ -164,13 +177,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                           padding: EdgeInsets.fromLTRB(0, 0,
                                               size.getHeight() * 0.005, 0),
                                           child: Text(
-                                            res['topSell'][i]["ProductName"],
+                                            res['latestProduct'][i]
+                                                ["ProductName"],
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 height: 1.3,
                                                 fontWeight: FontWeight.w500,
-                                                fontSize:
-                                                    size.getHeight() * 0.024),
+                                                fontSize: 18 * textScaleFactor),
                                           ),
                                         ),
                                         SizedBox(
@@ -181,18 +194,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                               size.getHeight() * 0.005, 0),
                                           child: Text(
                                             ((_on)
-                                                ? Price(res['topSell'][i]
+                                                ? Price(res['latestProduct'][i]
                                                             ['ProductPrice']
                                                         .toString()) +
                                                     ' \$'
-                                                : Price((res['topSell'][i][
+                                                : Price((res['latestProduct'][i]
+                                                                [
                                                                 'ProductPrice'] *
                                                             1480)
                                                         .toString()) +
                                                     ' IQD'),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                                 color: Colors.black54,
-                                                fontSize: 14,
+                                                fontSize: 14 * textScaleFactor,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         )
@@ -203,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: size.getHeight() * 0.05),
               Container(
                   decoration: BoxDecoration(
-                    color: ExchangeCardColor,
+                    color: Colors.blue,
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
                   height: size.getHeight() * 0.1,
@@ -217,16 +231,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         // color: Colors.amber,
                         padding: EdgeInsets.fromLTRB(0, size.getHeight() * 0.01,
                             size.getWidth() * 0.03, 0),
-                        child: Column(children: const [
+                        child: Column(children: [
                           Text(
                             'دولار امريكي',
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20 * textScaleFactor),
                           ),
                           Text('100 \$',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16))
+                                  fontSize: 16 * textScaleFactor))
                         ]),
                       ),
                       Container(
@@ -247,15 +263,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         padding: EdgeInsets.symmetric(
                             vertical: size.getHeight() * 0.01),
                         child: Column(children: [
-                          const Text(
+                          Text(
                             'دينار عراقي',
-                            style: TextStyle(color: Colors.white, fontSize: 20),
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20 * textScaleFactor),
                           ),
                           Text(Price(100 * DollarPrice) + ' IQD',
-                              style: const TextStyle(
+                              style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 16))
+                                  fontSize: 16 * textScaleFactor))
                         ]),
                       )
                     ],

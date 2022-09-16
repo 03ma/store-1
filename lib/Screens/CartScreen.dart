@@ -104,6 +104,7 @@ class _CartScreenState extends State<CartScreen> {
   _CartScreenState(this.Products);
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var size = MSize(context);
     return Scaffold(
         backgroundColor: Colors.white,
@@ -119,10 +120,10 @@ class _CartScreenState extends State<CartScreen> {
                           Container(
                             margin:
                                 EdgeInsets.only(right: size.getWidth() * 0.05),
-                            child: const Text('سلة التسوق',
+                            child: Text('سلة التسوق',
                                 style: TextStyle(
                                     color: Colors.blue,
-                                    fontSize: 24,
+                                    fontSize: 24 * textScaleFactor,
                                     fontWeight: FontWeight.w500)),
                           ),
                           Container(
@@ -141,7 +142,8 @@ class _CartScreenState extends State<CartScreen> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => Orders()));
+                                          builder: (context) =>
+                                              Orders(Products)));
                                 },
                               ),
                               SizedBox(width: size.getWidth() * 0.02),
@@ -167,11 +169,11 @@ class _CartScreenState extends State<CartScreen> {
                             alignment: Alignment.center,
                             child: Image.asset('assets/images/CartEmpety.png'),
                           ),
-                          const Text(
+                          Text(
                             "لا توجد منتجات في عربة التسوق",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 22 * textScaleFactor,
                                 color: Colors.grey,
                                 fontWeight: FontWeight.bold),
                           )
@@ -215,7 +217,7 @@ class _CartScreenState extends State<CartScreen> {
                                       style: TextStyle(
                                         color: Colors.blue,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 21,
+                                        fontSize: 21 * textScaleFactor,
                                       ),
                                     ),
                                   ),
@@ -245,7 +247,8 @@ class _CartScreenState extends State<CartScreen> {
                                                 ' - ' + (j + 1).toString(),
                                                 style: TextStyle(
                                                     color: Colors.black,
-                                                    fontSize: 23,
+                                                    fontSize:
+                                                        23 * textScaleFactor,
                                                     fontWeight:
                                                         FontWeight.w400)),
                                           )
@@ -266,7 +269,7 @@ class _CartScreenState extends State<CartScreen> {
                           horizontal: size.getWidth() * 0.05,
                           vertical: size.getHeight() * 0.01),
                       width: size.getWidth() * 0.9,
-                      child: ProductWidget(Result[i], size),
+                      child: ProductWidget(Result[i], size, textScaleFactor),
                     ),
                   ),
                 (Result.length > 0)
@@ -280,17 +283,17 @@ class _CartScreenState extends State<CartScreen> {
                         child: Container(
                             margin: EdgeInsets.symmetric(
                                 vertical: size.getHeight() * 0.03),
-                            height: size.getHeight() * 0.1,
+                            height: size.getHeight() * 0.09,
                             width: size.getWidth() * 0.85,
                             decoration: BoxDecoration(
                                 color: Colors.blueAccent,
                                 borderRadius: BorderRadius.circular(14)),
                             alignment: Alignment.center,
-                            child: const Text(
+                            child: Text(
                               'اكمال الطلب',
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 30,
+                                  fontSize: 30 * textScaleFactor,
                                   color: Colors.white),
                             )),
                       )
@@ -354,7 +357,7 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  Widget ProductWidget(IDS, size) {
+  Widget ProductWidget(IDS, size, textScaleFactor) {
     var Product;
     var sum = IDS.length;
     for (var i = 0; i < Products.length; i++) {
@@ -363,139 +366,149 @@ class _CartScreenState extends State<CartScreen> {
         break;
       }
     }
-    return Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Column(
+    return Product != null
+        ? Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  padding:
-                      EdgeInsets.only(top: 3, left: size.getWidth() * 0.023),
-                  alignment: Alignment.topLeft,
-                  width: (size.getWidth() -
-                      size.getWidth() * 0.1 -
-                      size.getWidth() * 0.37),
-                  height: (size.getHeight() * 0.18) / 2,
-                  child: Text(
-                    Product['ProductName'],
-                    textAlign: TextAlign.end,
-                    style: const TextStyle(
-                        color: Colors.blue,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400),
-                  ),
+                Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(
+                          top: 3, left: size.getWidth() * 0.023),
+                      alignment: Alignment.topLeft,
+                      width: (size.getWidth() -
+                          size.getWidth() * 0.1 -
+                          size.getWidth() * 0.37),
+                      height: (size.getHeight() * 0.18) / 2,
+                      child: Text(
+                        Product['ProductName'],
+                        textAlign: TextAlign.end,
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize:
+                                20 * double.parse(textScaleFactor.toString()),
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    Container(
+                        width: (size.getWidth() -
+                            size.getWidth() * 0.1 -
+                            size.getWidth() * 0.37),
+                        height: (size.getHeight() * 0.18) / 2,
+                        child: Row(
+                          children: [
+                            Container(
+                              width: (size.getWidth() -
+                                      size.getWidth() * 0.1 -
+                                      size.getWidth() * 0.37) *
+                                  0.54,
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    InkWell(
+                                      child: Container(
+                                        width: size.getHeight() * 0.047,
+                                        height: size.getHeight() * 0.047,
+                                        decoration: BoxDecoration(
+                                            color: ProductColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        alignment: Alignment.center,
+                                        child: Icon(Icons.add, size: 30),
+                                      ),
+                                      onTap: (() => addOne(IDS, Product)),
+                                    ),
+                                    Container(
+                                      // margin: EdgeInsets.symmetric(horizontal: ),
+                                      width: size.getHeight() * 0.047,
+                                      height: size.getHeight() * 0.047,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: Colors.blueAccent,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Text(
+                                        sum.toString(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18 *
+                                              double.parse(
+                                                  textScaleFactor.toString()),
+                                        ),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () => deleteOne(IDS),
+                                      child: Container(
+                                        width: size.getHeight() * 0.047,
+                                        height: size.getHeight() * 0.047,
+                                        decoration: BoxDecoration(
+                                            color: ProductColor,
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        alignment: Alignment.center,
+                                        child: const Icon(
+                                          Icons.remove,
+                                          color: Colors.black,
+                                          size: 28,
+                                        ),
+                                      ),
+                                    )
+                                  ]),
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(
+                                  top: 3, left: size.getWidth() * 0.023),
+                              width: (size.getWidth() -
+                                      size.getWidth() * 0.1 -
+                                      size.getWidth() * 0.37) *
+                                  0.46,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                Price(sum * Product['ProductPrice']) + ' \$',
+                                style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 16 *
+                                        double.parse(
+                                            textScaleFactor.toString()),
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ],
+                        )),
+                  ],
                 ),
                 Container(
-                    width: (size.getWidth() -
-                        size.getWidth() * 0.1 -
-                        size.getWidth() * 0.37),
-                    height: (size.getHeight() * 0.18) / 2,
-                    child: Row(
-                      children: [
-                        Container(
-                            width: (size.getWidth() -
-                                    size.getWidth() * 0.1 -
-                                    size.getWidth() * 0.37) *
-                                0.54,
-                            child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  InkWell(
-                                    child: Container(
-                                      width: size.getHeight() * 0.05,
-                                      height: size.getHeight() * 0.05,
-                                      decoration: BoxDecoration(
-                                          color: ProductColor,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      alignment: Alignment.center,
-                                      child: Icon(Icons.add, size: 30),
-                                    ),
-                                    onTap: (() => addOne(IDS, Product)),
-                                  ),
-                                  Container(
-                                    // margin: EdgeInsets.symmetric(horizontal: ),
-                                    width: size.getHeight() * 0.05,
-                                    height: size.getHeight() * 0.05,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: Colors.blueAccent,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Text(
-                                      sum.toString(),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: () => deleteOne(IDS),
-                                    child: Container(
-                                      width: size.getHeight() * 0.05,
-                                      height: size.getHeight() * 0.05,
-                                      decoration: BoxDecoration(
-                                          color: ProductColor,
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      alignment: Alignment.center,
-                                      child: const Icon(
-                                        Icons.remove,
-                                        color: Colors.black,
-                                        size: 28,
-                                      ),
-                                    ),
-                                  )
-                                ])),
-                        Container(
-                          padding: EdgeInsets.only(
-                              top: 3, left: size.getWidth() * 0.023),
-                          width: (size.getWidth() -
-                                  size.getWidth() * 0.1 -
-                                  size.getWidth() * 0.37) *
-                              0.46,
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            Price(sum * Product['ProductPrice']) + ' \$',
-                            style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                      ],
-                    )),
+                  width: size.getWidth() * 0.37,
+                  height: size.getHeight(),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 1,
+                        blurRadius: 7,
+                        offset:
+                            const Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      ProductImageUrl + Product['ProductImage'],
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
               ],
-            ),
-            Container(
-              width: size.getWidth() * 0.37,
-              height: size.getHeight(),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 1,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3), // changes position of shadow
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  ProductImageUrl + Product['ProductImage'],
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ],
-        ));
+            ))
+        : Container();
   }
 }

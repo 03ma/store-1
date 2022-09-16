@@ -26,6 +26,7 @@ class _FavoriteState extends State<FavoriteScreen> {
     var box = await Hive.openBox('Favorite');
 
     var temp = await box.values.toList();
+
     setState(() {
       Result = temp;
     });
@@ -39,6 +40,7 @@ class _FavoriteState extends State<FavoriteScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var size = MSize(context);
     return Scaffold(
         backgroundColor: Colors.white,
@@ -49,10 +51,10 @@ class _FavoriteState extends State<FavoriteScreen> {
                     height: size.getHeight() * 0.1,
                     width: size.getWidth(),
                     alignment: Alignment.center,
-                    child: const Text('المفضلة',
+                    child: Text('المفضلة',
                         style: TextStyle(
                             color: Colors.blue,
-                            fontSize: 24,
+                            fontSize: 24 * textScaleFactor,
                             fontWeight: FontWeight.w500))),
                 // Product(Result[i], size, i)
                 (Result.length != 0)
@@ -65,7 +67,8 @@ class _FavoriteState extends State<FavoriteScreen> {
                                     horizontal: size.getWidth() * 0.05,
                                     vertical: size.getHeight() * 0.01),
                                 width: size.getWidth() * 0.9,
-                                child: Product(Result[i], size, i))
+                                child: Product(
+                                    Result[i], size, i, textScaleFactor))
                         ],
                       )
                     : Column(
@@ -81,11 +84,11 @@ class _FavoriteState extends State<FavoriteScreen> {
                             width: size.getWidth(),
                           ),
                           SizedBox(height: size.getHeight() * 0.07),
-                          const Text(
+                          Text(
                             "لا توجد منتجات في المفضلة",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontSize: 22,
+                                fontSize: 22 * textScaleFactor,
                                 color: Color.fromRGBO(158, 158, 158, 1),
                                 fontWeight: FontWeight.bold),
                           )
@@ -104,7 +107,7 @@ class _FavoriteState extends State<FavoriteScreen> {
     });
   }
 
-  Widget Product(id, size, index) {
+  Widget Product(id, size, index, textScaleFactor) {
     var product;
     for (var i = 0; i < Products.length; i++) {
       if (Products[i]['_id'] == id) {
@@ -132,9 +135,9 @@ class _FavoriteState extends State<FavoriteScreen> {
                   child: Text(
                     product['ProductName'],
                     textAlign: TextAlign.end,
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Colors.blue,
-                        fontSize: 20,
+                        fontSize: 20 * double.parse(textScaleFactor.toString()),
                         fontWeight: FontWeight.w400),
                   ),
                 ),
@@ -167,9 +170,10 @@ class _FavoriteState extends State<FavoriteScreen> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             Price(product['ProductPrice']) + ' \$',
-                            style: const TextStyle(
+                            style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 16,
+                                fontSize: 16 *
+                                    double.parse(textScaleFactor.toString()),
                                 fontWeight: FontWeight.w600),
                           ),
                         ),
@@ -181,6 +185,7 @@ class _FavoriteState extends State<FavoriteScreen> {
               width: size.getWidth() * 0.37,
               height: size.getHeight(),
               decoration: BoxDecoration(
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
@@ -195,7 +200,7 @@ class _FavoriteState extends State<FavoriteScreen> {
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
                   ProductImageUrl + product['ProductImage'],
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
