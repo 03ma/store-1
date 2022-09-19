@@ -187,22 +187,22 @@ class _ProductState extends State<ProductPage> {
           SizedBox(height: size.getHeight() * 0.03),
           Properties(size, 'منفذ تخزين', 'Memory', textScaleFactor,
               secendValue: 'ExternalMemory'),
-          SizedBox(height: size.getHeight() * 0.03),
-          Properties(
-              size, 'دقة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
-              secendValue: 'CamaraQuality'),
-          SizedBox(height: size.getHeight() * 0.03),
-          Properties(
-              size, 'جودة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
-              secendValue: 'VideoResolution'),
-          SizedBox(height: size.getHeight() * 0.03),
-          Properties(
-              size, 'دقة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
-              secendValue: 'CamaraQuality'),
-          SizedBox(height: size.getHeight() * 0.03),
-          Properties(
-              size, 'جودة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
-              secendValue: 'VideoResolution'),
+          // SizedBox(height: size.getHeight() * 0.03),
+          // Properties(
+          //     size, 'دقة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
+          //     secendValue: 'CamaraQuality'),
+          // SizedBox(height: size.getHeight() * 0.03),
+          // Properties(
+          //     size, 'جودة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
+          //     secendValue: 'VideoResolution'),
+          // SizedBox(height: size.getHeight() * 0.03),
+          // Properties(
+          //     size, 'دقة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
+          //     secendValue: 'CamaraQuality'),
+          // SizedBox(height: size.getHeight() * 0.03),
+          // Properties(
+          //     size, 'جودة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
+          //     secendValue: 'VideoResolution'),
           SizedBox(height: size.getHeight() * 0.03),
           InkWell(
             onTap: (() async {
@@ -342,6 +342,7 @@ class _ProductState extends State<ProductPage> {
   }
 
   Widget Properties(size, key, value, textScaleFactor, {secendValue}) {
+    print(product[value]);
     return Column(
       children: [
         Row(

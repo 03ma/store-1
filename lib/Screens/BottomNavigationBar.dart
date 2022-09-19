@@ -11,6 +11,7 @@ import 'package:store/Screens/FavoriteScreen.dart';
 import 'package:store/Screens/HomeScreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:store/Constants/Server.dart';
+import 'package:store/Screens/InfoScreen.dart';
 
 class BottomNavigationBarScreen extends StatefulWidget {
   const BottomNavigationBarScreen({Key? key}) : super(key: key);
@@ -94,6 +95,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarScreen> {
               HomeScreen(HomeResponse, Products),
               FavoriteScreen(Products, UserID),
               CartScreen(Products),
+              InfoScreen()
             ][_selectedIndex])
           : const Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomNavigationBar(
@@ -118,10 +120,18 @@ class _BottomNavigationBarState extends State<BottomNavigationBarScreen> {
                 getIcon('assets/icons/selectedBag.svg', 2, _selectedIndex),
             label: "",
           ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.more_horiz_outlined),
+              activeIcon: Icon(
+                Icons.more_horiz_outlined,
+                color: Colors.black,
+              ),
+              label: ""),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: selectedItemColor,
         onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
         backgroundColor: white,
         unselectedItemColor: unselectedItemColor,
       ),
@@ -137,7 +147,7 @@ class _BottomNavigationBarState extends State<BottomNavigationBarScreen> {
       assets,
       width: 25,
       height: 25,
-      color: selectedItemColor,
+      color: (index == selectedIndex) ? selectedItemColor : unselectedItemColor,
     );
   }
 }

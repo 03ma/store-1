@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:store/Constants/Colors.dart';
 import 'package:store/Constants/Server.dart';
 import 'package:store/Constants/Size.dart';
+import 'package:store/Screens/AdvertisementScreen.dart';
 import 'package:store/Screens/CategoryScreen.dart';
 import 'package:store/Screens/Product.dart';
 
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
         children: [
           SizedBox(height: size.getHeight() * 0.01),
-          carouselSlider(size),
+          carouselSlider(context, res['advertisement'], size),
           SizedBox(height: size.getHeight() * 0.05),
           GridView(
             scrollDirection: Axis.vertical, //default
@@ -290,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // List<Widget> childrenOFList(data, size, on) {}
 
-  Widget carouselSlider(size) {
+  Widget carouselSlider(context, advertisement, size) {
     return CarouselSlider(
       options: CarouselOptions(
         autoPlay: true,
@@ -304,11 +305,14 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         },
       ),
-      items: images
-          .map(
+      items: advertisement
+          .map<Widget>(
             (item) => InkWell(
               onTap: (() {
-                print(item);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Advertisements(item)),
+                );
               }),
               child: Container(
                 decoration: BoxDecoration(
@@ -322,8 +326,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Radius.circular(10.0),
                   ),
                   child: Image.network(
-                    item,
-                    fit: BoxFit.fill,
+                    AdvertisementImageUrl + item["Photo"],
+                    fit: BoxFit.contain,
                   ),
                 ),
               ),

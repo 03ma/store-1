@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -30,11 +31,8 @@ class _OrdersState extends State<Orders> {
       setState(() {
         orders = json.decode(response.body);
         isLoaded = true;
-        print(orders);
       });
-    } else {
-      print(response.reasonPhrase);
-    }
+    } else {}
   }
 
   @override
@@ -62,11 +60,14 @@ class _OrdersState extends State<Orders> {
                     children: [
                       Container(
                         margin: EdgeInsets.only(right: size.getWidth() * 0.05),
-                        child: const Text('الطلبات السابقة',
-                            style: TextStyle(
-                                color: Color.fromRGBO(33, 150, 243, 1),
-                                fontSize: 24,
-                                fontWeight: FontWeight.w500)),
+                        child: const Text(
+                          'الطلبات السابقة',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
                       Container(
                         width: size.getWidth() * 0.3,
@@ -97,7 +98,24 @@ class _OrdersState extends State<Orders> {
                 : orders['order'].length > 0
                     ? Container(
                         child: Column(
-                        children: [],
+                        children: [
+                          for (var i = 0; i < orders['order'].length; i++)
+                            for (var j = 0;
+                                j < orders['order'][i]['Products'].length;
+                                j++)
+                              Product(
+                                  orders['order'][i]['Products'][j]
+                                      ['ProductName'],
+                                  orders['order'][i]['Products'][j]
+                                      ['ProductPrice'],
+                                  orders['order'][i]['Products'][j]
+                                      ['ProductImage'],
+                                  orders['order'][i]['Products'][j]['quantity'],
+                                  orders['order'][i]['Products'][j]["Colors"],
+                                  orders['order'][i]['status'],
+                                  size,
+                                  textScaleFactor)
+                        ],
                       ))
                     : Container(
                         height: size.getHeight() * 0.9,
@@ -127,17 +145,15 @@ class _OrdersState extends State<Orders> {
     );
   }
 
-  Widget Product(id, size, index, textScaleFactor) {
-    var product;
-    for (var i = 0; i < Products.length; i++) {
-      if (Products[i]['_id'] == id) {
-        product = Products[i];
-        break;
-      }
-    }
+  Widget Product(name, price, imageName, Quantity, colorOfProduct, status, size,
+      textScaleFactor) {
     return Container(
-        width: double.infinity,
-        height: double.infinity,
+        // width: sizeinfinity,
+        // height: double.infinity,
+        margin: EdgeInsets.symmetric(
+          horizontal: size.getWidth() * 0.05,
+          vertical: size.getHeight() * 0.01,
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.end,
@@ -151,9 +167,9 @@ class _OrdersState extends State<Orders> {
                   width: (size.getWidth() -
                       size.getWidth() * 0.1 -
                       size.getWidth() * 0.37),
-                  height: (size.getHeight() * 0.18) / 2,
+                  height: (size.getHeight() * 0.18) / 3,
                   child: Text(
-                    product['ProductName'],
+                    name,
                     textAlign: TextAlign.end,
                     style: TextStyle(
                         color: Colors.blue,
@@ -165,36 +181,97 @@ class _OrdersState extends State<Orders> {
                     width: (size.getWidth() -
                         size.getWidth() * 0.1 -
                         size.getWidth() * 0.37),
-                    height: (size.getHeight() * 0.18) / 2,
                     child: Row(
                       children: [
                         Container(
-                          alignment: Alignment.centerRight,
-                          width: (size.getWidth() -
-                                  size.getWidth() * 0.1 -
-                                  size.getWidth() * 0.37) *
-                              0.54,
-                          child: IconButton(
-                            icon: const Icon(Icons.favorite,
-                                size: 30, color: Colors.red),
-                            onPressed: (() => print(index)),
-                          ),
-                        ),
+                            alignment: Alignment.centerRight,
+                            width: (size.getWidth() -
+                                    size.getWidth() * 0.1 -
+                                    size.getWidth() * 0.37) *
+                                0.6,
+                            child: Column(
+                              children: [
+                                (colorOfProduct.length == 1)
+                                    ? ColorOne(
+                                        colorOfProduct, size, textScaleFactor)
+                                    : (colorOfProduct.length == 2)
+                                        ? ColorsTwo(colorOfProduct, size,
+                                            textScaleFactor)
+                                        : (colorOfProduct.length == 3)
+                                            ? ColorsThree(colorOfProduct, size,
+                                                textScaleFactor)
+                                            : ColorsMoreThanThree(
+                                                colorOfProduct,
+                                                size,
+                                                textScaleFactor),
+                                Container(
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      color: (status == 0)
+                                          ? Colors.blue
+                                          : (status == 1)
+                                              ? Colors.green.withOpacity(0.8)
+                                              : Color(0xff8b0000)
+                                                  .withOpacity(0.8),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  height: (size.getHeight() * 0.18) / 3.4,
+                                  width: (size.getWidth() -
+                                          size.getWidth() * 0.1 -
+                                          size.getWidth() * 0.37) *
+                                      0.6,
+                                  child: Text(
+                                    status == 1
+                                        ? "مكتمل"
+                                        : status == 0
+                                            ? 'جاري المعالجة'
+                                            : 'ملغي',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18 *
+                                          double.parse(
+                                            textScaleFactor.toString(),
+                                          ),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
                         Container(
                           padding: EdgeInsets.only(
-                              top: 3, left: size.getWidth() * 0.023),
+                            top: size.getHeight() * 0.057,
+                            left: size.getWidth() * 0.023,
+                          ),
                           width: (size.getWidth() -
                                   size.getWidth() * 0.1 -
                                   size.getWidth() * 0.37) *
-                              0.46,
+                              0.4,
                           alignment: Alignment.centerLeft,
-                          child: Text(
-                            Price(product['ProductPrice']) + ' \$',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16 *
-                                    double.parse(textScaleFactor.toString()),
-                                fontWeight: FontWeight.w600),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                Price(price) + ' \$',
+                                style: TextStyle(
+                                    color: Colors.black45,
+                                    fontSize: 16 *
+                                        double.parse(
+                                            textScaleFactor.toString()),
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              SizedBox(
+                                height: size.getHeight() * 0.003,
+                              ),
+                              Text(
+                                'العدد : ' + Quantity.toString(),
+                                style: TextStyle(
+                                  color: Colors.black45.withOpacity(0.6),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18 *
+                                      double.parse(textScaleFactor.toString()),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -203,7 +280,7 @@ class _OrdersState extends State<Orders> {
             ),
             Container(
               width: size.getWidth() * 0.37,
-              height: size.getHeight(),
+              // height: size.getHeight(),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
@@ -219,12 +296,517 @@ class _OrdersState extends State<Orders> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  ProductImageUrl + product['ProductImage'],
+                  ProductImageUrl + imageName.toString(),
                   fit: BoxFit.contain,
                 ),
               ),
             ),
           ],
         ));
+  }
+
+  Widget ColorOne(colorOfProduct, size, textScaleFactor) {
+    return Container(
+      width:
+          (size.getWidth() - size.getWidth() * 0.1 - size.getWidth() * 0.37) *
+              0.6,
+      height: (size.getHeight() * 0.18) * 0.3,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            width: (size.getWidth() -
+                    size.getWidth() * 0.1 -
+                    size.getWidth() * 0.37) *
+                0.46,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(
+              horizontal: size.getWidth() * 0.02,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      width: size.getWidth() * 0.067,
+                      height: size.getWidth() * 0.067,
+                      margin: EdgeInsets.only(right: 0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                          width: 0.8,
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[0]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: size.getWidth() * 0.048,
+                        height: size.getWidth() * 0.048,
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[0]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            width: (size.getWidth() -
+                    size.getWidth() * 0.1 -
+                    size.getWidth() * 0.37) *
+                0.14,
+            child: Icon(
+              Icons.color_lens_sharp,
+              color: Colors.grey,
+              size: 26 * double.parse(textScaleFactor.toString()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget ColorsTwo(colorOfProduct, size, textScaleFactor) {
+    return Container(
+      width:
+          (size.getWidth() - size.getWidth() * 0.1 - size.getWidth() * 0.37) *
+              0.6,
+      height: (size.getHeight() * 0.18) * 0.3,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            width: (size.getWidth() -
+                    size.getWidth() * 0.1 -
+                    size.getWidth() * 0.37) *
+                0.46,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(
+              horizontal: size.getWidth() * 0.02,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      width: size.getWidth() * 0.067,
+                      height: size.getWidth() * 0.067,
+                      margin: EdgeInsets.only(right: 0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                          width: 0.8,
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[0]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: size.getWidth() * 0.048,
+                        height: size.getWidth() * 0.048,
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[0]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: size.getWidth() * 0.067,
+                      height: size.getWidth() * 0.067,
+                      margin: EdgeInsets.only(right: size.getWidth() * 0.035),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            width: 0.8,
+                            color: Color(
+                              int.parse(
+                                "0xff" +
+                                    colorOfProduct[1]['color']
+                                        .toString()
+                                        .replaceFirst('#', ''),
+                              ),
+                            ),
+                          )),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: size.getWidth() * 0.048,
+                        height: size.getWidth() * 0.048,
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[1]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            width: (size.getWidth() -
+                    size.getWidth() * 0.1 -
+                    size.getWidth() * 0.37) *
+                0.14,
+            child: Icon(
+              Icons.color_lens_sharp,
+              color: Colors.grey,
+              size: 26 * double.parse(textScaleFactor.toString()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget ColorsThree(colorOfProduct, size, textScaleFactor) {
+    return Container(
+      width:
+          (size.getWidth() - size.getWidth() * 0.1 - size.getWidth() * 0.37) *
+              0.6,
+      height: (size.getHeight() * 0.18) * 0.3,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            width: (size.getWidth() -
+                    size.getWidth() * 0.1 -
+                    size.getWidth() * 0.37) *
+                0.46,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(
+              horizontal: size.getWidth() * 0.02,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Stack(
+                  children: [
+                    Container(
+                      width: size.getWidth() * 0.067,
+                      height: size.getWidth() * 0.067,
+                      margin: EdgeInsets.only(right: 0),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            width: 0.8,
+                            color: Color(
+                              int.parse(
+                                "0xff" +
+                                    colorOfProduct[0]['color']
+                                        .toString()
+                                        .replaceFirst('#', ''),
+                              ),
+                            ),
+                          )),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: size.getWidth() * 0.048,
+                        height: size.getWidth() * 0.048,
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[0]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: size.getWidth() * 0.067,
+                      height: size.getWidth() * 0.067,
+                      margin: EdgeInsets.only(right: size.getWidth() * 0.035),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            width: 0.8,
+                            color: Color(
+                              int.parse(
+                                "0xff" +
+                                    colorOfProduct[1]['color']
+                                        .toString()
+                                        .replaceFirst('#', ''),
+                              ),
+                            ),
+                          )),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: size.getWidth() * 0.048,
+                        height: size.getWidth() * 0.048,
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[1]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: size.getWidth() * 0.067,
+                      height: size.getWidth() * 0.067,
+                      margin: EdgeInsets.only(right: size.getWidth() * 0.07),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            width: 0.8,
+                            color: Color(
+                              int.parse(
+                                "0xff" +
+                                    colorOfProduct[2]['color']
+                                        .toString()
+                                        .replaceFirst('#', ''),
+                              ),
+                            ),
+                          )),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: size.getWidth() * 0.048,
+                        height: size.getWidth() * 0.048,
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[2]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            width: (size.getWidth() -
+                    size.getWidth() * 0.1 -
+                    size.getWidth() * 0.37) *
+                0.14,
+            child: Icon(
+              Icons.color_lens_sharp,
+              color: Colors.grey,
+              size: 26 * double.parse(textScaleFactor.toString()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget ColorsMoreThanThree(colorOfProduct, size, textScaleFactor) {
+    return Container(
+      width:
+          (size.getWidth() - size.getWidth() * 0.1 - size.getWidth() * 0.37) *
+              0.6,
+      height: (size.getHeight() * 0.18) * 0.3,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            width: (size.getWidth() -
+                    size.getWidth() * 0.1 -
+                    size.getWidth() * 0.37) *
+                0.48,
+            alignment: Alignment.centerLeft,
+            padding: EdgeInsets.symmetric(
+              horizontal: size.getWidth() * 0.02,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  '1+ ',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18 * double.parse(textScaleFactor.toString()),
+                  ),
+                ),
+                Stack(
+                  children: [
+                    Container(
+                      width: size.getWidth() * 0.067,
+                      height: size.getWidth() * 0.067,
+                      margin: EdgeInsets.only(right: 0),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            width: 0.8,
+                            color: Color(
+                              int.parse(
+                                "0xff" +
+                                    colorOfProduct[0]['color']
+                                        .toString()
+                                        .replaceFirst('#', ''),
+                              ),
+                            ),
+                          )),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: size.getWidth() * 0.048,
+                        height: size.getWidth() * 0.048,
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[0]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: size.getWidth() * 0.067,
+                      height: size.getWidth() * 0.067,
+                      margin: EdgeInsets.only(right: size.getWidth() * 0.035),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            width: 0.8,
+                            color: Color(
+                              int.parse(
+                                "0xff" +
+                                    colorOfProduct[1]['color']
+                                        .toString()
+                                        .replaceFirst('#', ''),
+                              ),
+                            ),
+                          )),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: size.getWidth() * 0.048,
+                        height: size.getWidth() * 0.048,
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[1]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: size.getWidth() * 0.067,
+                      height: size.getWidth() * 0.067,
+                      margin: EdgeInsets.only(right: size.getWidth() * 0.07),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                          border: Border.all(
+                            width: 0.8,
+                            color: Color(
+                              int.parse(
+                                "0xff" +
+                                    colorOfProduct[2]['color']
+                                        .toString()
+                                        .replaceFirst('#', ''),
+                              ),
+                            ),
+                          )),
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: size.getWidth() * 0.048,
+                        height: size.getWidth() * 0.048,
+                        decoration: BoxDecoration(
+                          color: Color(
+                            int.parse(
+                              "0xff" +
+                                  colorOfProduct[2]['color']
+                                      .toString()
+                                      .replaceFirst('#', ''),
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            width: (size.getWidth() -
+                    size.getWidth() * 0.1 -
+                    size.getWidth() * 0.37) *
+                0.12,
+            child: Icon(
+              Icons.color_lens_sharp,
+              color: Colors.grey,
+              size: 26 * double.parse(textScaleFactor.toString()),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

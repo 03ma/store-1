@@ -9,13 +9,16 @@ import 'package:http/http.dart' as http;
 import 'package:store/Screens/BottomNavigationBar.dart';
 
 class CompleteOrder extends StatefulWidget {
-  const CompleteOrder({Key? key}) : super(key: key);
+  var Products;
+  CompleteOrder(this.Products);
 
   @override
-  State<CompleteOrder> createState() => _CompleteOrderState();
+  State<CompleteOrder> createState() => _CompleteOrderState(Products);
 }
 
 class _CompleteOrderState extends State<CompleteOrder> {
+  var Products;
+  _CompleteOrderState(this.Products);
   var Name = '';
   var Phone = '';
   var Address = '';
@@ -26,18 +29,26 @@ class _CompleteOrderState extends State<CompleteOrder> {
     var UserID = await token.read('USER_ID');
     var box = await Hive.openBox('Carts');
     var temp = await box.values.toList();
-    var Products = [];
+    var _Products = [];
 
     for (var i = 0; i < temp.length; i++) {
       var Color = [];
-      for (var j = 0; j < temp[i].length; j++) {
-        Color.add({"color": temp[i][j]['Color']});
+      for (var x = 0; x < Products.length; x++) {
+        if (temp[i][0]["ID"] == Products[x]["_id"]) {
+          for (var j = 0; j < temp[i].length; j++) {
+            Color.add({"color": temp[i][j]['Color']});
+          }
+          _Products.add({
+            "quantity": temp[i].length,
+            "ProductID": temp[i][0]['ID'].toString(),
+            "ProductPrice": Products[x]['ProductPrice'],
+            "ProductName": Products[x]['ProductName'],
+            "ProductImage": Products[x]['ProductImage'],
+            "Colors": Color
+          });
+          break;
+        }
       }
-      Products.add({
-        "quantity": temp[i].length,
-        "ProductID": temp[i][0]['ID'].toString(),
-        "Colors": Color
-      });
     }
     var headers = {'Content-Type': 'application/json'};
     var request = http.Request('POST', Uri.parse(url + '/order/new'));
@@ -46,7 +57,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
       "buyerPhone": '0' + Phone,
       "buyerAddress": Address,
       'buyerId': UserID,
-      "products": Products
+      "products": _Products
     });
     request.headers.addAll(headers);
 
@@ -150,86 +161,51 @@ class _CompleteOrderState extends State<CompleteOrder> {
                   ),
                 ),
               ),
-              SizedBox(height: size.getHeight() * 0.05),
+              SizedBox(height: size.getHeight() * 0.025),
               Container(
+                width: size.getWidth() * 0.93,
                 height: size.getHeight() * 0.133,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: size.getWidth() * 0.035,
+                child: TextFormField(
+                  onChanged: (value) => setState(() {
+                    Phone = value;
+                  }),
+                  maxLength: 10,
+                  keyboardType: TextInputType.number,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24 * textScaleFactor,
+                  ),
+                  decoration: InputDecoration(
+                    counterText: '',
+                    hintText: 'رقم الهاتف',
+                    hintStyle: TextStyle(
+                      color: Colors.black45,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20 * textScaleFactor,
                     ),
-                    Container(
-                      width: size.getWidth() * 0.71,
-                      height: size.getHeight() * 0.1,
-                      child: TextFormField(
-                        onChanged: (value) => setState(() {
-                          Phone = value;
-                        }),
-                        maxLength: 10,
-                        keyboardType: TextInputType.number,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 24 * textScaleFactor,
-                        ),
-                        decoration: InputDecoration(
-                          counterText: '',
-                          hintText: 'رقم الهاتف',
-                          hintStyle: TextStyle(
-                            color: Colors.black45,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20 * textScaleFactor,
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(color: Colors.black54),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.1),
-                            borderSide: const BorderSide(
-                                color: Colors.blue, width: 1.2),
-                          ),
-                          labelStyle: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 15 * textScaleFactor,
-                          ),
-                        ),
-                      ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: const BorderSide(color: Colors.black54),
                     ),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: size.getWidth() * 0.03),
-                      width: size.getWidth() * 0.19,
-                      height: size.getHeight() * 0.1,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        border: const Border(
-                          right: BorderSide(color: Colors.black54, width: 1.2),
-                          left: BorderSide(color: Colors.black54, width: 1.2),
-                          top: BorderSide(color: Colors.black54, width: 1.2),
-                          bottom: BorderSide(color: Colors.black54, width: 1.2),
-                        ),
-                      ),
-                      alignment: Alignment.center,
-                      child: Text(
-                        '+964',
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 22 * textScaleFactor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.1),
+                      borderSide:
+                          const BorderSide(color: Colors.blue, width: 1.2),
                     ),
-                  ],
+                    labelStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 15 * textScaleFactor,
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(height: size.getHeight() * 0.05),
+              SizedBox(height: size.getHeight() * 0.025),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     width: size.getWidth() * 0.93,
-                    height: size.getHeight() * 0.20,
+                    // height: size.getHeight() * 0.20,
                     child: TextFormField(
                       onChanged: (value) => setState(() {
                         Address = value;
@@ -263,15 +239,14 @@ class _CompleteOrderState extends State<CompleteOrder> {
                       ),
                     ),
                   ),
-                  Container(
-                      margin: EdgeInsets.only(right: size.getWidth() * 0.01),
-                      child: Text(
-                        '${Address.length}/180',
-                        style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: 16 * textScaleFactor,
-                        ),
-                      ))
+                  SizedBox(height: size.getHeight() * 0.01),
+                  Text(
+                    '${Address.length}/180',
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16 * textScaleFactor,
+                    ),
+                  )
                 ],
               ),
               SizedBox(height: size.getHeight() * 0.05),
