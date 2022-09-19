@@ -118,14 +118,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: [
                             SizedBox(width: size.getWidth() * 0.05),
                             for (var i = 0;
-                                i < res['latestProduct'].length;
+                                i <
+                                    ((res['latestProduct'].length > 4)
+                                        ? 5
+                                        : res['latestProduct'].length);
                                 i++)
                               Container(
                                   margin: EdgeInsets.symmetric(
                                       horizontal: size.getWidth() * 0.02,
                                       vertical: size.getHeight() * 0.02),
                                   width: size.getWidth() * 0.4,
-                                  height: size.getHeight() * 0.25,
+                                  height: size.getHeight() * 0.252,
                                   decoration: BoxDecoration(
                                     color: ProductColor,
                                     borderRadius: BorderRadius.circular(10),
@@ -182,9 +185,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ["ProductName"],
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
-                                                height: 1.3,
                                                 fontWeight: FontWeight.w500,
-                                                fontSize: 18 * textScaleFactor),
+                                                fontSize: 17 * textScaleFactor),
                                           ),
                                         ),
                                         SizedBox(
@@ -221,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.blue,
                     borderRadius: const BorderRadius.all(Radius.circular(8)),
                   ),
-                  height: size.getHeight() * 0.1,
+                  height: size.getHeight() * 0.11,
                   margin:
                       EdgeInsets.symmetric(horizontal: size.getWidth() * 0.06),
                   child: Row(
@@ -232,19 +234,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         // color: Colors.amber,
                         padding: EdgeInsets.fromLTRB(0, size.getHeight() * 0.01,
                             size.getWidth() * 0.03, 0),
-                        child: Column(children: [
-                          Text(
-                            'دولار امريكي',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20 * textScaleFactor),
-                          ),
-                          Text('100 \$',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16 * textScaleFactor))
-                        ]),
+                        height: size.getHeight() * 0.11,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'دولار امريكي',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20 * textScaleFactor),
+                              ),
+                              Text('100 \$',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16 * textScaleFactor))
+                            ]),
                       ),
                       Container(
                         // color: Colors.red,
@@ -263,19 +268,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: size.getWidth() * 0.872 / 2,
                         padding: EdgeInsets.symmetric(
                             vertical: size.getHeight() * 0.01),
-                        child: Column(children: [
-                          Text(
-                            'دينار عراقي',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20 * textScaleFactor),
-                          ),
-                          Text(Price(100 * DollarPrice) + ' IQD',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16 * textScaleFactor))
-                        ]),
+                        height: size.getHeight() * 0.11,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'دينار عراقي',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20 * textScaleFactor),
+                              ),
+                              Text(Price(100 * DollarPrice) + ' IQD',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16 * textScaleFactor))
+                            ]),
                       )
                     ],
                   ))

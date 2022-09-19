@@ -18,11 +18,22 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   var Result;
+  var Products;
+  _CartScreenState(this.Products);
 
   Future<void> getData() async {
     var box = await Hive.openBox('Carts');
-
     var temp = await box.values.toList();
+    for (var i = 0; i < temp.length; i++) {
+      for (var j = 0; j < Products.length; j++) {
+        if (temp[i][0]["ID"] == Products[j]["_id"]) {
+          break;
+        } else if (j == Products.length - 1) {
+          await box.clear();
+        }
+      }
+    }
+    temp = await box.values.toList();
 
     setState(() {
       Result = temp;
@@ -100,8 +111,6 @@ class _CartScreenState extends State<CartScreen> {
     }
   }
 
-  var Products;
-  _CartScreenState(this.Products);
   @override
   Widget build(BuildContext context) {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
@@ -184,9 +193,9 @@ class _CartScreenState extends State<CartScreen> {
                   Container(
                     height: size.getHeight() * 0.18,
                     margin: EdgeInsets.symmetric(
-                        horizontal: size.getWidth() * 0.05,
+                        horizontal: size.getWidth() * 0.04,
                         vertical: size.getHeight() * 0.01),
-                    width: size.getWidth() * 0.9,
+                    width: size.getWidth() * 0.92,
                     child: ProductWidget(Result[i], size, textScaleFactor, i),
                   ),
                 (Result.length > 0)
@@ -434,13 +443,15 @@ class _CartScreenState extends State<CartScreen> {
                                         children: [
                                           InkWell(
                                             child: Container(
-                                              width: size.getHeight() * 0.047,
-                                              height: size.getHeight() * 0.047,
+                                              width: size.getWidth() * 0.1,
+                                              height: size.getHeight() * 0.05,
                                               decoration: BoxDecoration(
-                                                  color: ProductColor,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                                color: ProductColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  10,
+                                                ),
+                                              ),
                                               alignment: Alignment.center,
                                               child: Icon(Icons.add, size: 30),
                                             ),
@@ -448,8 +459,11 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                           Container(
                                             // margin: EdgeInsets.symmetric(horizontal: ),
-                                            width: size.getHeight() * 0.047,
-                                            height: size.getHeight() * 0.047,
+                                            width: size.getWidth() * 0.1,
+                                            height: size.getHeight() * 0.05,
+                                            margin: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    size.getWidth() * 0.004),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
                                                 color: Colors.blueAccent,
@@ -468,13 +482,15 @@ class _CartScreenState extends State<CartScreen> {
                                           InkWell(
                                             onTap: () => deleteOne(IDS),
                                             child: Container(
-                                              width: size.getHeight() * 0.047,
-                                              height: size.getHeight() * 0.047,
+                                              width: size.getWidth() * 0.1,
+                                              height: size.getHeight() * 0.05,
                                               decoration: BoxDecoration(
-                                                  color: ProductColor,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                                color: ProductColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                  10,
+                                                ),
+                                              ),
                                               alignment: Alignment.center,
                                               child: const Icon(
                                                 Icons.remove,
@@ -499,11 +515,10 @@ class _CartScreenState extends State<CartScreen> {
                               alignment: Alignment.bottomLeft,
                               child: Text(
                                 Price(sum * Product['ProductPrice']) + ' \$',
+                                textScaleFactor:
+                                    double.parse(textScaleFactor.toString()),
                                 style: TextStyle(
                                     color: Colors.grey,
-                                    fontSize: 16 *
-                                        double.parse(
-                                            textScaleFactor.toString()),
                                     fontWeight: FontWeight.w600),
                               ),
                             ),

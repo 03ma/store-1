@@ -163,30 +163,60 @@ class _ProductState extends State<ProductPage> {
                       fontWeight: FontWeight.w400))),
           SizedBox(height: size.getHeight() * 0.04),
           ColorsView(size),
-          SizedBox(height: size.getHeight() * 0.03),
+          SizedBox(height: size.getHeight() * 0.01),
+
           Properties(
             size,
             'دقة الشاشة',
-            'ScreenResolution',
+            product["ScreenResolution"],
             textScaleFactor,
           ),
-          SizedBox(height: size.getHeight() * 0.03),
+          SizedBox(height: size.getHeight() * 0.01),
           Properties(
             size,
             'منفذ الشحن',
-            'ChargerPort',
+            product["ChargerPort"],
             textScaleFactor,
           ),
-          SizedBox(height: size.getHeight() * 0.03),
+          SizedBox(height: size.getHeight() * 0.01),
           Properties(
             size,
             'المعالج',
-            'Cpu',
+            product["Cpu"],
             textScaleFactor,
           ),
-          SizedBox(height: size.getHeight() * 0.03),
-          Properties(size, 'منفذ تخزين', 'Memory', textScaleFactor,
-              secendValue: 'ExternalMemory'),
+          SizedBox(height: size.getHeight() * 0.01),
+          Properties(
+            size,
+            'الذاكرة العشوائية',
+            product["Memory"]['RAM'],
+            textScaleFactor,
+          ),
+          for (var d = 0; d < product["FrontCamera"].length; d++)
+            Column(
+              children: [
+                SizedBox(height: size.getHeight() * 0.01),
+                Properties(
+                  size,
+                  'الكاميرا الامامية -${d + 1}-',
+                  product["FrontCamera"][d],
+                  textScaleFactor,
+                ),
+              ],
+            ),
+          for (var d = 0; d < product["BackCamera"].length; d++)
+            Column(
+              children: [
+                SizedBox(height: size.getHeight() * 0.01),
+                Properties(
+                  size,
+                  'الكاميرا الخلفية -${d + 1}-',
+                  product["BackCamera"][d],
+                  textScaleFactor,
+                ),
+              ],
+            ),
+
           // SizedBox(height: size.getHeight() * 0.03),
           // Properties(
           //     size, 'دقة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
@@ -330,9 +360,11 @@ class _ProductState extends State<ProductPage> {
                                 ? Color(int.parse("0xFF" +
                                     product['Colors'][i + 1]['ColorHex']
                                         .substring(1)))
-                                : Color(int.parse("0xFF" +
-                                    product['Colors'][i - 1]['ColorHex']
-                                        .substring(1))))
+                                : (product['Colors'].length > 1)
+                                    ? Color(int.parse("0xFF" +
+                                        product['Colors'][i - 1]['ColorHex']
+                                            .substring(1)))
+                                    : Colors.grey)
                         : Container()),
               )
           ],
@@ -341,41 +373,32 @@ class _ProductState extends State<ProductPage> {
     );
   }
 
-  Widget Properties(size, key, value, textScaleFactor, {secendValue}) {
-    print(product[value]);
-    return Column(
+  Widget Properties(
+    size,
+    key,
+    value,
+    textScaleFactor,
+  ) {
+    return Row(
       children: [
-        Row(
-          children: [
-            Container(
-              height: size.getHeight() * 0.06,
-              width: size.getWidth() * 0.4,
-              padding: EdgeInsets.symmetric(horizontal: size.getWidth() * 0.02),
-              child: Text(key,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 22 * double.parse(textScaleFactor.toString()),
-                      fontWeight: FontWeight.w600)),
-            ),
-            Container(
-              height: size.getHeight() * 0.06,
-              alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: size.getWidth() * 0.04),
-              child: Text(
-                  (secendValue == null)
-                      ? product[value].toString()
-                      : (product[value][secendValue] is bool == true)
-                          ? (product[value][secendValue])
-                              ? 'نعم'
-                              : 'لا يوجد'
-                          : product[value][secendValue].toString(),
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: 18 * double.parse(textScaleFactor.toString()),
-                      fontWeight: FontWeight.w600)),
-            ),
-          ],
-        )
+        Container(
+          width: size.getWidth() * 0.45,
+          alignment: Alignment.centerRight,
+          padding: EdgeInsets.symmetric(horizontal: size.getWidth() * 0.02),
+          child: Text(key,
+              style: TextStyle(
+                  color: Colors.black87,
+                  fontSize: 19 * double.parse(textScaleFactor.toString()),
+                  fontWeight: FontWeight.w500)),
+        ),
+        Container(
+          width: size.getWidth() * 0.55,
+          child: Text(value.toString(),
+              style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 18 * double.parse(textScaleFactor.toString()),
+                  fontWeight: FontWeight.w400)),
+        ),
       ],
     );
   }

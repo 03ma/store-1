@@ -26,7 +26,16 @@ class _FavoriteState extends State<FavoriteScreen> {
     var box = await Hive.openBox('Favorite');
 
     var temp = await box.values.toList();
-
+    for (var i = 0; i < temp.length; i++) {
+      for (var j = 0; j < Products.length; j++) {
+        if (temp[i] == Products[j]["_id"]) {
+          break;
+        } else if (j == Products.length - 1) {
+          await box.clear();
+        }
+      }
+    }
+    temp = await box.values.toList();
     setState(() {
       Result = temp;
     });

@@ -21,197 +21,239 @@ class _InfoScreenState extends State<InfoScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: size.getHeight() * 0.03,
-            ),
-            Container(
-              width: size.getWidth(),
-              height: size.getHeight() * 0.23,
-              alignment: Alignment.center,
-              child: Image.asset('assets/images/logo_blue_no_bg.png'),
-            ),
-            Text(
-              'مكتب النزار للمومبايلات والصيرفة',
-              textScaleFactor: textScaleFactor,
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: size.getHeight() * 0.03,
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.location_on,
-                  color: Colors.blue,
-                  size: 34,
+              Container(
+                width: size.getWidth(),
+                height: size.getHeight() * 0.23,
+                alignment: Alignment.center,
+                child: Image.asset('assets/images/logo_blue_no_bg.png'),
+              ),
+              Text(
+                'مكتب النزار للمومبايلات والصيرفة',
+                textScaleFactor: textScaleFactor,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
                 ),
-                Text(
-                  'بغداد - مدينة الصدر - ساحة 55',
-                  textScaleFactor: textScaleFactor,
-                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.w300),
-                )
-              ],
-            ),
-            SizedBox(
-              height: size.getHeight() * 0.03,
-            ),
-            Container(
-              width: size.getWidth() * 0.9,
-              height: size.getHeight() * 0.001,
-              color: Colors.grey,
-            ),
-            SizedBox(
-              height: size.getHeight() * 0.03,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                  onTap: (() {
-                    setState(() {
-                      IsCompany = false;
-                      FirstPhoneNumber = '07714096772';
-                      SecendPhoneNumber = '07714096772';
-                    });
-                  }),
-                  child: Container(
-                    width: size.getWidth() * 0.35,
-                    height: size.getHeight() * 0.15,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: !IsCompany ? Colors.blueGrey : Colors.grey,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: size.getHeight() * 0.01,
-                        ),
-                        Container(
-                          width: size.getWidth() * 0.3,
-                          height: size.getHeight() * 0.09,
-                          child: Image.asset('assets/images/UsedPhone.png'),
-                        ),
-                        Text(
-                          "قسم المستعمل",
-                          textScaleFactor: textScaleFactor,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
-                        )
-                      ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    color: Colors.blue,
+                    size: 34,
+                  ),
+                  Text(
+                    'بغداد - مدينة الصدر - ساحة 55',
+                    textScaleFactor: textScaleFactor,
+                    style: TextStyle(fontSize: 21, fontWeight: FontWeight.w300),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: size.getHeight() * 0.03,
+              ),
+              Container(
+                width: size.getWidth() * 0.9,
+                height: size.getHeight() * 0.001,
+                color: Colors.grey,
+              ),
+              SizedBox(
+                height: size.getHeight() * 0.03,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  InkWell(
+                    onTap: (() {
+                      setState(() {
+                        IsCompany = false;
+                        FirstPhoneNumber = '07714096772';
+                        SecendPhoneNumber = '07714096772';
+                      });
+                    }),
+                    child: Container(
+                      width: size.getWidth() * 0.35,
+                      height: size.getHeight() * 0.15,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: !IsCompany ? Colors.blueGrey : Colors.grey,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: size.getHeight() * 0.01,
+                          ),
+                          Container(
+                            width: size.getWidth() * 0.3,
+                            height: size.getHeight() * 0.09,
+                            child: Image.asset('assets/images/UsedPhone.png'),
+                          ),
+                          Text(
+                            "قسم المستعمل",
+                            textScaleFactor: textScaleFactor,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                InkWell(
-                  onTap: (() {
-                    setState(() {
-                      IsCompany = true;
-                      FirstPhoneNumber = '07722229439';
-                      SecendPhoneNumber = '07822229439';
-                    });
-                  }),
-                  child: Container(
-                    width: size.getWidth() * 0.35,
-                    height: size.getHeight() * 0.15,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: IsCompany ? Colors.blueGrey : Colors.grey,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
+                  InkWell(
+                    onTap: (() {
+                      setState(() {
+                        IsCompany = true;
+                        FirstPhoneNumber = '07722229439';
+                        SecendPhoneNumber = '07822229439';
+                      });
+                    }),
+                    child: Container(
+                      width: size.getWidth() * 0.35,
+                      height: size.getHeight() * 0.15,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: IsCompany ? Colors.blueGrey : Colors.grey,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: size.getHeight() * 0.01,
+                          ),
+                          Container(
+                            width: size.getWidth() * 0.3,
+                            height: size.getHeight() * 0.09,
+                            child: Image.asset('assets/images/logo_No_bg.png'),
+                          ),
+                          Text(
+                            "الشركة",
+                            textScaleFactor: textScaleFactor,
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
+                          )
+                        ],
+                      ),
                     ),
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: size.getHeight() * 0.01,
-                        ),
-                        Container(
-                          width: size.getWidth() * 0.3,
-                          height: size.getHeight() * 0.09,
-                          child: Image.asset('assets/images/logo_No_bg.png'),
-                        ),
-                        Text(
-                          "الشركة",
-                          textScaleFactor: textScaleFactor,
-                          style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: size.getHeight() * 0.03,
-            ),
-            Container(
-              height: size.getHeight() * 0.15,
-              width: size.getWidth() * 0.9,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.blueGrey,
-                // color: Colors.blue.shade800,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 10,
-                    offset: Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
-              child: Column(
-                children: [
-                  Container(
-                    height: size.getHeight() * 0.15 / 2,
-                    width: size.getWidth() * 0.9,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          FirstPhoneNumber,
-                          textScaleFactor: textScaleFactor,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24),
-                        ),
-                        SizedBox(
-                          width: size.getWidth() * 0.02,
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.phone,
-                            color: Colors.grey,
-                            size: 37,
+              SizedBox(
+                height: size.getHeight() * 0.03,
+              ),
+              Container(
+                height: size.getHeight() * 0.15,
+                width: size.getWidth() * 0.9,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.blueGrey,
+                  // color: Colors.blue.shade800,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 2,
+                      blurRadius: 10,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      height: size.getHeight() * 0.15 / 2,
+                      width: size.getWidth() * 0.9,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            FirstPhoneNumber,
+                            textScaleFactor: textScaleFactor,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24),
                           ),
-                          onPressed: () {
-                            UrlLauncher.launch("tel://$FirstPhoneNumber");
-                          },
-                        ),
-                        IconButton(
+                          SizedBox(
+                            width: size.getWidth() * 0.02,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.phone,
+                              color: Colors.grey,
+                              size: 37,
+                            ),
+                            onPressed: () {
+                              UrlLauncher.launch("tel://$FirstPhoneNumber");
+                            },
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Icons.whatsapp,
+                                color: Colors.green,
+                                size: 37,
+                              ),
+                              onPressed: () async => await UrlLauncher.launch(
+                                  "https://wa.me/" +
+                                      '964' +
+                                      FirstPhoneNumber.replaceFirst('0', '') +
+                                      "?text=مرحباً")),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: size.getHeight() * 0.15 / 2,
+                      width: size.getWidth() * 0.9,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            SecendPhoneNumber,
+                            textScaleFactor: textScaleFactor,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 24),
+                          ),
+                          SizedBox(
+                            width: size.getWidth() * 0.02,
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.phone,
+                              color: Colors.grey,
+                              size: 37,
+                            ),
+                            onPressed: () {
+                              UrlLauncher.launch("tel://$SecendPhoneNumber");
+                            },
+                          ),
+                          IconButton(
                             icon: Icon(
                               Icons.whatsapp,
                               color: Colors.green,
@@ -220,120 +262,81 @@ class _InfoScreenState extends State<InfoScreen> {
                             onPressed: () async => await UrlLauncher.launch(
                                 "https://wa.me/" +
                                     '964' +
-                                    FirstPhoneNumber.replaceFirst('0', '') +
-                                    "?text=مرحباً")),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    height: size.getHeight() * 0.15 / 2,
-                    width: size.getWidth() * 0.9,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          SecendPhoneNumber,
-                          textScaleFactor: textScaleFactor,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 24),
-                        ),
-                        SizedBox(
-                          width: size.getWidth() * 0.02,
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.phone,
-                            color: Colors.grey,
-                            size: 37,
+                                    SecendPhoneNumber.replaceFirst('0', '') +
+                                    "?text=مرحباً"),
                           ),
-                          onPressed: () {
-                            UrlLauncher.launch("tel://$SecendPhoneNumber");
-                          },
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.whatsapp,
-                            color: Colors.green,
-                            size: 37,
-                          ),
-                          onPressed: () async => await UrlLauncher.launch(
-                              "https://wa.me/" +
-                                  '964' +
-                                  SecendPhoneNumber.replaceFirst('0', '') +
-                                  "?text=مرحباً"),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
-            SizedBox(
-              height: size.getHeight() * 0.02,
-            ),
-            Container(
-              width: size.getWidth() * 0.4,
-              height: size.getHeight() * 0.1,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  InkWell(
-                    onTap: (() async {
-                      var url = 'https://www.instagram.com/nizarbazoon/';
+              SizedBox(
+                height: size.getHeight() * 0.02,
+              ),
+              Container(
+                width: size.getWidth() * 0.4,
+                height: size.getHeight() * 0.1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    InkWell(
+                      onTap: (() async {
+                        var url = 'https://www.instagram.com/nizarbazoon/';
 
-                      if (await UrlLauncher.canLaunch(url)) {
-                        await UrlLauncher.launch(
-                          url,
-                          universalLinksOnly: true,
-                        );
-                      } else {
-                        throw 'There was a problem to open the url: $url';
-                      }
-                    }),
-                    child: Container(
-                      width: size.getWidth() * 0.15,
-                      child: Image.asset('assets/images/instagram.png'),
+                        if (await UrlLauncher.canLaunch(url)) {
+                          await UrlLauncher.launch(
+                            url,
+                            universalLinksOnly: true,
+                          );
+                        } else {
+                          throw 'There was a problem to open the url: $url';
+                        }
+                      }),
+                      child: Container(
+                        width: size.getWidth() * 0.15,
+                        child: Image.asset('assets/images/instagram.png'),
+                      ),
                     ),
-                  ),
-                  InkWell(
-                    onTap: (() async {
-                      String fbProtocolUrl;
-                      bool isIOS =
-                          Theme.of(context).platform == TargetPlatform.iOS;
-                      if (isIOS) {
-                        fbProtocolUrl = 'fb://profile/1479100262309379';
-                      } else {
-                        fbProtocolUrl = 'fb://page/1479100262309379';
-                      }
+                    InkWell(
+                      onTap: (() async {
+                        String fbProtocolUrl;
+                        bool isIOS =
+                            Theme.of(context).platform == TargetPlatform.iOS;
+                        if (isIOS) {
+                          fbProtocolUrl = 'fb://profile/1479100262309379';
+                        } else {
+                          fbProtocolUrl = 'fb://page/1479100262309379';
+                        }
 
-                      String fallbackUrl =
-                          'https://www.facebook.com/nizar.mobie.55';
+                        String fallbackUrl =
+                            'https://www.facebook.com/nizar.mobie.55';
 
-                      try {
-                        bool launched = await UrlLauncher.launch(fbProtocolUrl,
-                            forceSafariVC: false);
+                        try {
+                          bool launched = await UrlLauncher.launch(
+                              fbProtocolUrl,
+                              forceSafariVC: false);
 
-                        if (!launched) {
+                          if (!launched) {
+                            await UrlLauncher.launch(fallbackUrl,
+                                forceSafariVC: false);
+                          }
+                        } catch (e) {
                           await UrlLauncher.launch(fallbackUrl,
                               forceSafariVC: false);
                         }
-                      } catch (e) {
-                        await UrlLauncher.launch(fallbackUrl,
-                            forceSafariVC: false);
-                      }
-                    }),
-                    child: Container(
-                      width: size.getWidth() * 0.15,
-                      height: size.getHeight() * 0.1,
-                      child: Image.asset('assets/images/FaceBook.png'),
+                      }),
+                      child: Container(
+                        width: size.getWidth() * 0.15,
+                        height: size.getHeight() * 0.1,
+                        child: Image.asset('assets/images/FaceBook.png'),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
