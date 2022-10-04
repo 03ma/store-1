@@ -20,11 +20,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   var res;
   var Products;
-
+  var DollarPrice;
   _HomeScreenState(this.res, this.Products);
   bool _on = true;
-
-  var DollarPrice = 1480;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      print(res['Price'][0]["Price"]);
+      DollarPrice = res['Price'][0]["Price"];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 : Price((res['latestProduct'][i]
                                                                 [
                                                                 'ProductPrice'] *
-                                                            1480)
+                                                            DollarPrice)
                                                         .toString()) +
                                                     ' IQD'),
                                             style: TextStyle(

@@ -1,5 +1,5 @@
-const ip = '212.237.127.75';
-const port = '4040';
+const ip = '38.242.249.29';
+const port = '3030';
 const url = 'http://$ip:$port';
 const ProductImageUrl = url + "/photo/product/";
 const CategoryImageUrl = url + "/photo/category/";
