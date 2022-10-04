@@ -389,6 +389,7 @@ class _CartScreenState extends State<CartScreen> {
                       child: Text(
                         Product['ProductName'],
                         textAlign: TextAlign.end,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize:
@@ -514,7 +515,9 @@ class _CartScreenState extends State<CartScreen> {
                                   0.4,
                               alignment: Alignment.bottomLeft,
                               child: Text(
-                                Price(sum * Product['ProductPrice']) + ' \$',
+                                Price(sum * Product['ProductPrice'])
+                                        .toString() +
+                                    ' \$',
                                 textScaleFactor:
                                     double.parse(textScaleFactor.toString()),
                                 style: TextStyle(

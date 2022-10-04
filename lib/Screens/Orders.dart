@@ -171,6 +171,7 @@ class _OrdersState extends State<Orders> {
                   child: Text(
                     name,
                     textAlign: TextAlign.end,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20 * double.parse(textScaleFactor.toString()),

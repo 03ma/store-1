@@ -35,7 +35,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 child: Image.asset('assets/images/logo_blue_no_bg.png'),
               ),
               Text(
-                'مكتب النزار للمومبايلات والصيرفة',
+                'نزار للموبايل والصيرفة',
                 textScaleFactor: textScaleFactor,
                 style: TextStyle(
                   color: Colors.black,
@@ -282,15 +282,15 @@ class _InfoScreenState extends State<InfoScreen> {
                   children: [
                     InkWell(
                       onTap: (() async {
-                        var url = 'https://www.instagram.com/nizarbazoon/';
-
-                        if (await UrlLauncher.canLaunch(url)) {
-                          await UrlLauncher.launch(
-                            url,
-                            universalLinksOnly: true,
-                          );
+                        const nativeUrl =
+                            "instagram://user?username=nizarbazoon";
+                        const webUrl = "https://www.instagram.com/nizarbazoon/";
+                        if (await UrlLauncher.canLaunch(nativeUrl)) {
+                          await UrlLauncher.launch(nativeUrl);
+                        } else if (await UrlLauncher.canLaunch(webUrl)) {
+                          await UrlLauncher.launch(webUrl);
                         } else {
-                          throw 'There was a problem to open the url: $url';
+                          print("can't open Instagram");
                         }
                       }),
                       child: Container(

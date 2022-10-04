@@ -144,6 +144,7 @@ class _FavoriteState extends State<FavoriteScreen> {
                   child: Text(
                     product['ProductName'],
                     textAlign: TextAlign.end,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20 * double.parse(textScaleFactor.toString()),
@@ -178,7 +179,7 @@ class _FavoriteState extends State<FavoriteScreen> {
                               0.46,
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            Price(product['ProductPrice']) + ' \$',
+                            Price(product['ProductPrice']).toString() + ' \$',
                             style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 16 *

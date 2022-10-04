@@ -16,10 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<String> images = [
-    "https://tech-echo.com/wp-content/uploads/2018/09/iphone-xr-specifications-585x265.jpg",
-    "https://img.youm7.com/xlarge/201905130453315331.jpg"
-  ];
   var activePage = 0;
 
   var res;
