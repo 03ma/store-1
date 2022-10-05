@@ -1,9 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:store/Constants/Colors.dart';
 import 'package:store/Constants/Server.dart';
 import 'package:store/Constants/Size.dart';
 import 'package:store/Screens/HomeScreen.dart';
@@ -61,268 +57,273 @@ class _ProductState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
-
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     var size = MSize(context);
     return SafeArea(
+        top: !isIOS,
+        bottom: !isIOS,
+        left: !isIOS,
+        right: !isIOS,
         child: Scaffold(
-      body: SingleChildScrollView(
-          child: Column(
-        children: [
-          Stack(
-            alignment: Alignment.topLeft,
+          body: SingleChildScrollView(
+              child: Column(
             children: [
-              Container(
-                  width: size.getWidth(),
-                  height: size.getHeight() * 0.4,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20)),
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: Colors.grey.withOpacity(0.4),
-                          blurRadius: 10.0,
-                          offset: const Offset(0, 0))
-                    ],
+              Stack(
+                alignment: Alignment.topLeft,
+                children: [
+                  Container(
+                      width: size.getWidth(),
+                      height: size.getHeight() * 0.4,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: const BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20)),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                              color: Colors.grey.withOpacity(0.4),
+                              blurRadius: 10.0,
+                              offset: const Offset(0, 0))
+                        ],
+                      ),
+                      child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(20),
+                              bottomRight: Radius.circular(20)),
+                          child: Image.network(
+                            ProductImageUrl + product['ProductImage'],
+                            fit: BoxFit.contain,
+                          ))),
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: size.getHeight() * 0.02,
+                        left: size.getWidth() * 0.02),
+                    width: 40,
+                    height: 40,
+                    // color: Colors.amber,
+                    child: IconButton(
+                      onPressed: (() => Navigator.of(context).pop()),
+                      icon: Icon(
+                        Icons.arrow_back_ios_new,
+                        color: Colors.blue,
+                      ),
+                    ),
                   ),
-                  child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20)),
-                      child: Image.network(
-                        ProductImageUrl + product['ProductImage'],
-                        fit: BoxFit.contain,
-                      ))),
+                ],
+              ),
+              SizedBox(height: size.getHeight() * 0.02),
               Container(
-                margin: EdgeInsets.only(
-                    top: size.getHeight() * 0.02, left: size.getWidth() * 0.02),
-                width: 40,
-                height: 40,
-                // color: Colors.amber,
-                child: IconButton(
-                  onPressed: (() => Navigator.of(context).pop()),
-                  icon: Icon(
-                    Icons.arrow_back_ios_new,
-                    color: Colors.blue,
-                  ),
+                width: size.getWidth(),
+                child: Row(
+                  children: [
+                    Container(
+                      width: size.getWidth() * 0.2,
+                      alignment: Alignment.center,
+                      child: IconButton(
+                        onPressed: (() async {
+                          var box = await Hive.openBox('Favorite');
+                          if (checkIfInFavorite) {
+                            box.deleteAt(_indexFavorite);
+                            setState(() {
+                              checkIfInFavorite = false;
+                            });
+                          } else {
+                            await box.add(product["_id"]);
+                            var temp = await box.values.toList();
+                            CheckIfInFavorite();
+                          }
+                        }),
+                        icon: (!checkIfInFavorite)
+                            ? const Icon(Icons.favorite_border_sharp,
+                                size: 35, color: Colors.black45)
+                            : const Icon(Icons.favorite,
+                                size: 35, color: Colors.red),
+                      ),
+                    ),
+                    Container(
+                        alignment: Alignment.topLeft,
+                        width: size.getWidth() * 0.8,
+                        padding: EdgeInsets.only(left: size.getWidth() * 0.02),
+                        child: Text(product['ProductName'].toString(),
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 23 * textScaleFactor,
+                                fontWeight: FontWeight.w500)))
+                  ],
                 ),
               ),
-            ],
-          ),
-          SizedBox(height: size.getHeight() * 0.02),
-          Container(
-            width: size.getWidth(),
-            child: Row(
-              children: [
-                Container(
-                  width: size.getWidth() * 0.2,
-                  alignment: Alignment.center,
-                  child: IconButton(
-                    onPressed: (() async {
-                      var box = await Hive.openBox('Favorite');
-                      if (checkIfInFavorite) {
-                        box.deleteAt(_indexFavorite);
-                        setState(() {
-                          checkIfInFavorite = false;
-                        });
-                      } else {
-                        await box.add(product["_id"]);
-                        var temp = await box.values.toList();
-                        CheckIfInFavorite();
+              Container(
+                  width: size.getWidth(),
+                  padding: EdgeInsets.only(left: size.getWidth() * 0.02),
+                  child: Text(Price(product['ProductPrice'].toString()) + ' \$',
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 21 * textScaleFactor,
+                          fontWeight: FontWeight.w400))),
+              SizedBox(height: size.getHeight() * 0.04),
+              ColorsView(size),
+              SizedBox(height: size.getHeight() * 0.01),
+
+              Properties(
+                size,
+                'دقة الشاشة',
+                product["ScreenResolution"],
+                textScaleFactor,
+              ),
+              SizedBox(height: size.getHeight() * 0.01),
+              Properties(
+                size,
+                'منفذ الشحن',
+                product["ChargerPort"],
+                textScaleFactor,
+              ),
+              SizedBox(height: size.getHeight() * 0.01),
+              Properties(
+                size,
+                'المعالج',
+                product["Cpu"],
+                textScaleFactor,
+              ),
+              SizedBox(height: size.getHeight() * 0.01),
+              Properties(
+                size,
+                'الذاكرة العشوائية',
+                product["Memory"]['RAM'],
+                textScaleFactor,
+              ),
+              for (var d = 0; d < product["FrontCamera"].length; d++)
+                Column(
+                  children: [
+                    SizedBox(height: size.getHeight() * 0.01),
+                    Properties(
+                      size,
+                      'الكاميرا الامامية -${d + 1}-',
+                      product["FrontCamera"][d],
+                      textScaleFactor,
+                    ),
+                  ],
+                ),
+              for (var d = 0; d < product["BackCamera"].length; d++)
+                Column(
+                  children: [
+                    SizedBox(height: size.getHeight() * 0.01),
+                    Properties(
+                      size,
+                      'الكاميرا الخلفية -${d + 1}-',
+                      product["BackCamera"][d],
+                      textScaleFactor,
+                    ),
+                  ],
+                ),
+
+              // SizedBox(height: size.getHeight() * 0.03),
+              // Properties(
+              //     size, 'دقة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
+              //     secendValue: 'CamaraQuality'),
+              // SizedBox(height: size.getHeight() * 0.03),
+              // Properties(
+              //     size, 'جودة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
+              //     secendValue: 'VideoResolution'),
+              // SizedBox(height: size.getHeight() * 0.03),
+              // Properties(
+              //     size, 'دقة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
+              //     secendValue: 'CamaraQuality'),
+              // SizedBox(height: size.getHeight() * 0.03),
+              // Properties(
+              //     size, 'جودة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
+              //     secendValue: 'VideoResolution'),
+              SizedBox(height: size.getHeight() * 0.03),
+              InkWell(
+                onTap: (() async {
+                  var box = await Hive.openBox('Carts');
+                  if (checkIfInCart) {
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.ERROR,
+                      headerAnimationLoop: false,
+                      animType: AnimType.TOPSLIDE,
+                      title: 'المنتج موجود في السلة بالفعل',
+                      dismissOnTouchOutside: false,
+                      btnOk: InkWell(
+                        onTap: (() => Navigator.pop(context)),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: size.getWidth() * 0.2),
+                          height: size.getHeight() * 0.06,
+                          decoration: BoxDecoration(
+                              color: Colors.redAccent,
+                              borderRadius: BorderRadius.circular(10)),
+                          alignment: Alignment.center,
+                          child: Text('اغلاق',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24 * textScaleFactor,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      btnOkText: 'اغلاق',
+                      btnOkOnPress: () {},
+                    ).show();
+                  } else {
+                    await box.add([
+                      {
+                        "ID": product["_id"],
+                        'Color': product['Colors'][color]['ColorHex']
                       }
-                    }),
-                    icon: (!checkIfInFavorite)
-                        ? const Icon(Icons.favorite_border_sharp,
-                            size: 35, color: Colors.black45)
-                        : const Icon(Icons.favorite,
-                            size: 35, color: Colors.red),
-                  ),
-                ),
-                Container(
-                    alignment: Alignment.topLeft,
-                    width: size.getWidth() * 0.8,
-                    padding: EdgeInsets.only(left: size.getWidth() * 0.02),
-                    child: Text(product['ProductName'].toString(),
-                        textAlign: TextAlign.end,
-                        style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 23 * textScaleFactor,
-                            fontWeight: FontWeight.w500)))
-              ],
-            ),
-          ),
-          Container(
-              width: size.getWidth(),
-              padding: EdgeInsets.only(left: size.getWidth() * 0.02),
-              child: Text(Price(product['ProductPrice'].toString()) + ' \$',
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 21 * textScaleFactor,
-                      fontWeight: FontWeight.w400))),
-          SizedBox(height: size.getHeight() * 0.04),
-          ColorsView(size),
-          SizedBox(height: size.getHeight() * 0.01),
-
-          Properties(
-            size,
-            'دقة الشاشة',
-            product["ScreenResolution"],
-            textScaleFactor,
-          ),
-          SizedBox(height: size.getHeight() * 0.01),
-          Properties(
-            size,
-            'منفذ الشحن',
-            product["ChargerPort"],
-            textScaleFactor,
-          ),
-          SizedBox(height: size.getHeight() * 0.01),
-          Properties(
-            size,
-            'المعالج',
-            product["Cpu"],
-            textScaleFactor,
-          ),
-          SizedBox(height: size.getHeight() * 0.01),
-          Properties(
-            size,
-            'الذاكرة العشوائية',
-            product["Memory"]['RAM'],
-            textScaleFactor,
-          ),
-          for (var d = 0; d < product["FrontCamera"].length; d++)
-            Column(
-              children: [
-                SizedBox(height: size.getHeight() * 0.01),
-                Properties(
-                  size,
-                  'الكاميرا الامامية -${d + 1}-',
-                  product["FrontCamera"][d],
-                  textScaleFactor,
-                ),
-              ],
-            ),
-          for (var d = 0; d < product["BackCamera"].length; d++)
-            Column(
-              children: [
-                SizedBox(height: size.getHeight() * 0.01),
-                Properties(
-                  size,
-                  'الكاميرا الخلفية -${d + 1}-',
-                  product["BackCamera"][d],
-                  textScaleFactor,
-                ),
-              ],
-            ),
-
-          // SizedBox(height: size.getHeight() * 0.03),
-          // Properties(
-          //     size, 'دقة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
-          //     secendValue: 'CamaraQuality'),
-          // SizedBox(height: size.getHeight() * 0.03),
-          // Properties(
-          //     size, 'جودة الكاميرا الامامية', 'FrontCamera', textScaleFactor,
-          //     secendValue: 'VideoResolution'),
-          // SizedBox(height: size.getHeight() * 0.03),
-          // Properties(
-          //     size, 'دقة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
-          //     secendValue: 'CamaraQuality'),
-          // SizedBox(height: size.getHeight() * 0.03),
-          // Properties(
-          //     size, 'جودة الكاميرا الخلفية', 'BackCamera', textScaleFactor,
-          //     secendValue: 'VideoResolution'),
-          SizedBox(height: size.getHeight() * 0.03),
-          InkWell(
-            onTap: (() async {
-              var box = await Hive.openBox('Carts');
-              if (checkIfInCart) {
-                AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.ERROR,
-                  headerAnimationLoop: false,
-                  animType: AnimType.TOPSLIDE,
-                  title: 'المنتج موجود في السلة بالفعل',
-                  dismissOnTouchOutside: false,
-                  btnOk: InkWell(
-                    onTap: (() => Navigator.pop(context)),
-                    child: Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: size.getWidth() * 0.2),
-                      height: size.getHeight() * 0.06,
-                      decoration: BoxDecoration(
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(10)),
-                      alignment: Alignment.center,
-                      child: Text('اغلاق',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24 * textScaleFactor,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  btnOkText: 'اغلاق',
-                  btnOkOnPress: () {},
-                ).show();
-              } else {
-                await box.add([
-                  {
-                    "ID": product["_id"],
-                    'Color': product['Colors'][color]['ColorHex']
+                    ]);
+                    var temp = await box.values.toList();
+                    CheckIFInCart();
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.SUCCES,
+                      headerAnimationLoop: false,
+                      animType: AnimType.TOPSLIDE,
+                      title: 'تم اضافة المنتج الى السلة',
+                      dismissOnTouchOutside: false,
+                      btnOk: InkWell(
+                        onTap: (() => Navigator.pop(context)),
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: size.getWidth() * 0.2),
+                          height: size.getHeight() * 0.06,
+                          decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(10)),
+                          alignment: Alignment.center,
+                          child: Text('اغلاق',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24 * textScaleFactor,
+                                  fontWeight: FontWeight.bold)),
+                        ),
+                      ),
+                      btnOkText: 'اغلاق',
+                      btnOkOnPress: () {},
+                    ).show();
                   }
-                ]);
-                var temp = await box.values.toList();
-                CheckIFInCart();
-                AwesomeDialog(
-                  context: context,
-                  dialogType: DialogType.SUCCES,
-                  headerAnimationLoop: false,
-                  animType: AnimType.TOPSLIDE,
-                  title: 'تم اضافة المنتج الى السلة',
-                  dismissOnTouchOutside: false,
-                  btnOk: InkWell(
-                    onTap: (() => Navigator.pop(context)),
-                    child: Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: size.getWidth() * 0.2),
-                      height: size.getHeight() * 0.06,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(10)),
-                      alignment: Alignment.center,
-                      child: Text('اغلاق',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 24 * textScaleFactor,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  btnOkText: 'اغلاق',
-                  btnOkOnPress: () {},
-                ).show();
-              }
-            }),
-            child: Container(
-                margin: EdgeInsets.only(top: size.getHeight() * 0.02),
-                width: size.getWidth() * 0.8,
-                height: size.getHeight() * 0.1,
-                decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10)),
-                alignment: Alignment.center,
-                child: Text(
-                  'اضف الى السلة',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 25 * textScaleFactor,
-                      fontWeight: FontWeight.bold),
-                )),
-          ),
-          SizedBox(height: size.getHeight() * 0.05),
-        ],
-      )),
-    ));
+                }),
+                child: Container(
+                    margin: EdgeInsets.only(top: size.getHeight() * 0.02),
+                    width: size.getWidth() * 0.8,
+                    height: size.getHeight() * 0.1,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(10)),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'اضف الى السلة',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25 * textScaleFactor,
+                          fontWeight: FontWeight.bold),
+                    )),
+              ),
+              SizedBox(height: size.getHeight() * 0.05),
+            ],
+          )),
+        ));
   }
 
   Widget ColorsView(size) {

@@ -20,7 +20,13 @@ class _AdvertisementState extends State<Advertisements> {
   Widget build(BuildContext context) {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var size = MSize(context);
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
     return SafeArea(
+      top: !isIOS,
+      bottom: !isIOS,
+      left: !isIOS,
+      right: !isIOS,
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(

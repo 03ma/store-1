@@ -88,15 +88,21 @@ class _BottomNavigationBarState extends State<BottomNavigationBarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
     return Scaffold(
       body: isLoaded
           ? SafeArea(
+              top: !isIOS,
+              bottom: !isIOS,
+              left: !isIOS,
+              right: !isIOS,
               child: [
-              HomeScreen(HomeResponse, Products),
-              FavoriteScreen(Products, UserID),
-              CartScreen(Products),
-              InfoScreen()
-            ][_selectedIndex])
+                HomeScreen(HomeResponse, Products),
+                FavoriteScreen(Products, UserID),
+                CartScreen(Products),
+                InfoScreen()
+              ][_selectedIndex])
           : const Center(child: CircularProgressIndicator()),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,

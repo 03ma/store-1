@@ -18,7 +18,12 @@ class _InfoScreenState extends State<InfoScreen> {
   Widget build(BuildContext context) {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var size = MSize(context);
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     return SafeArea(
+      top: !isIOS,
+      bottom: !isIOS,
+      left: !isIOS,
+      right: !isIOS,
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(

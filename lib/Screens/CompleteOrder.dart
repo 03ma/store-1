@@ -74,9 +74,12 @@ class _CompleteOrderState extends State<CompleteOrder> {
   Widget build(BuildContext context) {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     var size = MSize(context);
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     return SafeArea(
-      right: false,
-      left: false,
+      top: !isIOS,
+      bottom: !isIOS,
+      left: !isIOS,
+      right: !isIOS,
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(

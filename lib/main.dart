@@ -18,6 +18,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
     return MaterialApp(
         localizationsDelegates: const [
           GlobalCupertinoLocalizations.delegate,
@@ -34,6 +36,11 @@ class MyApp extends StatelessWidget {
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,
         ),
-        home: const SafeArea(child: BottomNavigationBarScreen()));
+        home: SafeArea(
+            top: !isIOS,
+            bottom: !isIOS,
+            left: !isIOS,
+            right: !isIOS,
+            child: BottomNavigationBarScreen()));
   }
 }
