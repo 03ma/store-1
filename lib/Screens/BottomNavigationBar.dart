@@ -60,6 +60,9 @@ class _BottomNavigationBarState extends State<BottomNavigationBarScreen> {
 
   Future<void> initOneSignal() async {
     await OneSignal.shared.setAppId("8f0462e2-2f86-493f-ae24-30509046522b");
+	OneSignal.shared
+       .promptUserForPushNotificationPermission()
+       .then((accepted) {});
   }
 
   void getAllData() async {
