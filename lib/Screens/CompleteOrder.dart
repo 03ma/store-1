@@ -172,7 +172,7 @@ class _CompleteOrderState extends State<CompleteOrder> {
                   onChanged: (value) => setState(() {
                     Phone = value;
                   }),
-                  maxLength: 10,
+                  maxLength: 11,
                   keyboardType: TextInputType.number,
                   style: TextStyle(
                     color: Colors.black,
@@ -255,8 +255,8 @@ class _CompleteOrderState extends State<CompleteOrder> {
               SizedBox(height: size.getHeight() * 0.05),
               InkWell(
                 onTap: (() async {
-                  if (Phone.length == 10 &&
-                      Name.length > 3 &&
+                  if (Phone.length == 11 &&
+                      Name.length >= 3 &&
                       Address.length > 6 &&
                       !isCompleted) {
                     MakeOrder();

@@ -164,7 +164,7 @@ class _ProductState extends State<ProductPage> {
                           fontWeight: FontWeight.w400))),
               SizedBox(height: size.getHeight() * 0.04),
               ColorsView(size),
-              SizedBox(height: size.getHeight() * 0.01),
+              SizedBox(height: size.getHeight() * 0.02),
 
               Properties(
                 size,
@@ -172,31 +172,38 @@ class _ProductState extends State<ProductPage> {
                 product["ScreenResolution"],
                 textScaleFactor,
               ),
-              SizedBox(height: size.getHeight() * 0.01),
+              SizedBox(height: size.getHeight() * 0.02),
               Properties(
                 size,
                 'منفذ الشحن',
                 product["ChargerPort"],
                 textScaleFactor,
               ),
-              SizedBox(height: size.getHeight() * 0.01),
+              SizedBox(height: size.getHeight() * 0.02),
               Properties(
                 size,
                 'المعالج',
                 product["Cpu"],
                 textScaleFactor,
               ),
-              SizedBox(height: size.getHeight() * 0.01),
+              SizedBox(height: size.getHeight() * 0.02),
               Properties(
                 size,
                 'الذاكرة العشوائية',
                 product["Memory"]['RAM'],
                 textScaleFactor,
               ),
+              SizedBox(height: size.getHeight() * 0.02),
+              Properties(
+                size,
+                'ذاكرة التخزين',
+                product["Memory"]['InternalMemory'],
+                textScaleFactor,
+              ),
               for (var d = 0; d < product["FrontCamera"].length; d++)
                 Column(
                   children: [
-                    SizedBox(height: size.getHeight() * 0.01),
+                    SizedBox(height: size.getHeight() * 0.02),
                     Properties(
                       size,
                       'الكاميرا الامامية -${d + 1}-',

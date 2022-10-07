@@ -25,10 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _on = true;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
-      print(res['Price'][0]["Price"]);
       DollarPrice = res['Price'][0]["Price"];
     });
   }

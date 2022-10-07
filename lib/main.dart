@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         ],
         locale: const Locale('ar', 'AE'),
         debugShowCheckedModeBanner: false,
-        title: 'Store',
+        title: "مكتب النزار",
         theme: ThemeData(
           splashColor: Colors.transparent,
           highlightColor: Colors.transparent,

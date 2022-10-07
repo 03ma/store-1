@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:store/Constants/Size.dart';
 import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 import 'dart:io' show Platform;
@@ -218,16 +221,29 @@ class _InfoScreenState extends State<InfoScreen> {
                             },
                           ),
                           IconButton(
-                              icon: Icon(
-                                Icons.whatsapp,
-                                color: Colors.green,
-                                size: 37,
-                              ),
-                              onPressed: () async => await UrlLauncher.launch(
-                                  "https://wa.me/" +
-                                      '964' +
-                                      FirstPhoneNumber.replaceFirst('0', '') +
-                                      "?text=مرحباً")),
+                            icon: Icon(
+                              Icons.whatsapp,
+                              color: Colors.green,
+                              size: 37,
+                            ),
+                            onPressed: () async {
+                              try {
+                                await UrlLauncher.launch(
+                                    "whatsapp://send?phone=964" +
+                                        FirstPhoneNumber.replaceFirst('0', '') +
+                                        "&text=مرحباً");
+                              } catch (e) {
+                                Fluttertoast.showToast(
+                                    msg: "تعذر فتح واتس اب !!",
+                                    textColor: Colors.white,
+                                    fontSize: 20 * textScaleFactor,
+                                    backgroundColor: Colors.black54,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1);
+                              }
+                            },
+                          )
                         ],
                       ),
                     ),
@@ -264,11 +280,24 @@ class _InfoScreenState extends State<InfoScreen> {
                               color: Colors.green,
                               size: 37,
                             ),
-                            onPressed: () async => await UrlLauncher.launch(
-                                "https://wa.me/" +
-                                    '964' +
-                                    SecendPhoneNumber.replaceFirst('0', '') +
-                                    "?text=مرحباً"),
+                            onPressed: () async {
+                              try {
+                                await UrlLauncher.launch(
+                                    "whatsapp://send?phone=964" +
+                                        SecendPhoneNumber.replaceFirst(
+                                            '0', '') +
+                                        "&text=مرحباً");
+                              } catch (e) {
+                                Fluttertoast.showToast(
+                                    msg: "تعذر فتح واتس اب !!",
+                                    textColor: Colors.white,
+                                    fontSize: 20 * textScaleFactor,
+                                    backgroundColor: Colors.black54,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1);
+                              }
+                            },
                           ),
                         ],
                       ),
@@ -291,9 +320,9 @@ class _InfoScreenState extends State<InfoScreen> {
                             "instagram://user?username=nizarbazoon";
                         const webUrl = "https://www.instagram.com/nizarbazoon/";
                         if (await UrlLauncher.canLaunch(nativeUrl)) {
-                          await UrlLauncher.launch(nativeUrl);
+                          UrlLauncher.launch(nativeUrl);
                         } else if (await UrlLauncher.canLaunch(webUrl)) {
-                          await UrlLauncher.launch(webUrl);
+                          UrlLauncher.launch(webUrl);
                         } else {
                           print("can't open Instagram");
                         }
