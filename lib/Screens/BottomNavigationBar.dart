@@ -91,15 +91,13 @@ class _BottomNavigationBarState extends State<BottomNavigationBarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
-
     return Scaffold(
+      backgroundColor: Colors.white,
       body: isLoaded
           ? SafeArea(
-              top: !isIOS,
-              bottom: !isIOS,
-              left: !isIOS,
-              right: !isIOS,
+              left: false,
+              right: false,
+              bottom: false,
               child: [
                 HomeScreen(HomeResponse, Products),
                 FavoriteScreen(Products, UserID),

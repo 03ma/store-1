@@ -57,13 +57,11 @@ class _ProductState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     final textScaleFactor = MediaQuery.of(context).textScaleFactor;
-    bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
     var size = MSize(context);
     return SafeArea(
-        top: !isIOS,
-        bottom: !isIOS,
-        left: !isIOS,
-        right: !isIOS,
+        left: false,
+        right: false,
+        bottom: false,
         child: Scaffold(
           body: SingleChildScrollView(
               child: Column(
