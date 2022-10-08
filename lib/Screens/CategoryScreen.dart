@@ -188,17 +188,16 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                             ),
                                             Container(
                                               width: size.getWidth(),
-                                              padding: EdgeInsets.fromLTRB(0, 0,
-                                                  size.getHeight() * 0.005, 0),
+                                              alignment: Alignment.topLeft,
+                                              padding: EdgeInsets.fromLTRB(
+                                                  size.getWidth() * 0.01,
+                                                  0,
+                                                  size.getHeight() * 0.005,
+                                                  0),
                                               child: Text(
-                                                (result[i]["ProductName"]
-                                                            .length >
-                                                        17)
-                                                    ? "..." +
-                                                        result[i]["ProductName"]
-                                                            .substring(0, 17)
-                                                    : result[i]["ProductName"],
-                                                overflow: TextOverflow.ellipsis,
+                                                result[i]["ProductName"],
+                                                textAlign: TextAlign.end,
+                                                maxLines: 2,
                                                 style: TextStyle(
                                                   color: Colors.blue,
                                                   height: 1.3,
