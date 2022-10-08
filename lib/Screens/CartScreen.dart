@@ -388,7 +388,9 @@ class _CartScreenState extends State<CartScreen> {
                       height: (size.getHeight() * 0.18) / 3,
                       child: Text(
                         Product['ProductName'],
-                        textAlign: TextAlign.end,
+                        textDirection: TextDirection.ltr,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize:
@@ -935,7 +937,7 @@ class _CartScreenState extends State<CartScreen> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '1+ ',
+                  (colorOfProduct.length - 3).toString() + '+ ',
                   style: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,

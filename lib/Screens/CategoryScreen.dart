@@ -188,16 +188,14 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                             ),
                                             Container(
                                               width: size.getWidth(),
-                                              alignment: Alignment.topLeft,
+                                              alignment: Alignment.centerLeft,
                                               padding: EdgeInsets.fromLTRB(
                                                   size.getWidth() * 0.01,
                                                   0,
-                                                  size.getHeight() * 0.005,
+                                                  size.getWidth() * 0.01,
                                                   0),
                                               child: Text(
                                                 result[i]["ProductName"],
-                                                textAlign: TextAlign.end,
-                                                maxLines: 2,
                                                 style: TextStyle(
                                                   color: Colors.blue,
                                                   height: 1.3,
@@ -205,15 +203,23 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                                   fontSize:
                                                       18 * textScaleFactor,
                                                 ),
+                                                textDirection:
+                                                    TextDirection.ltr,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                             SizedBox(
                                                 height:
                                                     size.getHeight() * 0.01),
                                             Container(
+                                              alignment: Alignment.centerLeft,
                                               width: size.getWidth(),
-                                              padding: EdgeInsets.fromLTRB(0, 0,
-                                                  size.getHeight() * 0.005, 0),
+                                              padding: EdgeInsets.fromLTRB(
+                                                  size.getWidth() * 0.01,
+                                                  0,
+                                                  size.getWidth() * 0.01,
+                                                  0),
                                               child: Text(
                                                 (Price(result[i]['ProductPrice']
                                                         .toString()) +
@@ -221,7 +227,7 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                                 style: TextStyle(
                                                     color: Colors.black54,
                                                     fontSize:
-                                                        14 * textScaleFactor,
+                                                        16 * textScaleFactor,
                                                     fontWeight:
                                                         FontWeight.bold),
                                               ),

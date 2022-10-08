@@ -228,13 +228,13 @@ class _InfoScreenState extends State<InfoScreen> {
                             ),
                             onPressed: () async {
                               var whatsapp = "+964" +
-                                  SecendPhoneNumber.replaceFirst('0', '');
+                                  FirstPhoneNumber.replaceFirst('0', '');
                               var whatsappURl_android =
                                   "whatsapp://send?phone=" +
                                       whatsapp +
-                                      "&text=hello";
+                                      "&text=مرحباً";
                               var whatappURL_ios =
-                                  "https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+                                  "https://wa.me/$whatsapp?text=${Uri.parse("مرحباً")}";
                               if (Platform.isIOS) {
                                 // for iOS phone only
                                 if (await UrlLauncher.canLaunch(
@@ -309,9 +309,9 @@ class _InfoScreenState extends State<InfoScreen> {
                                     var whatsappURl_android =
                                         "whatsapp://send?phone=" +
                                             whatsapp +
-                                            "&text=hello";
+                                            "&text=مرحباً";
                                     var whatappURL_ios =
-                                        "https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+                                        "https://wa.me/$whatsapp?text=${Uri.parse("مرحباً")}";
                                     if (Platform.isIOS) {
                                       // for iOS phone only
                                       if (await UrlLauncher.canLaunch(
@@ -319,10 +319,15 @@ class _InfoScreenState extends State<InfoScreen> {
                                         await UrlLauncher.launch(whatappURL_ios,
                                             forceSafariVC: false);
                                       } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                                content: new Text(
-                                                    "whatsapp no installed")));
+                                        Fluttertoast.showToast(
+                                            msg: "تعذر فتح واتس اب !!",
+                                            textColor: Colors.white,
+                                            fontSize: 20 * textScaleFactor,
+                                            backgroundColor: Colors.black54,
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1);
+                                        ;
                                       }
                                     } else {
                                       // android , web

@@ -256,7 +256,7 @@ class _OrdersState extends State<Orders> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
-                                Price(price) + ' \$',
+                                Price(price).toString() + ' \$',
                                 style: TextStyle(
                                     color: Colors.black45,
                                     fontSize: 16 *
@@ -679,7 +679,7 @@ class _OrdersState extends State<Orders> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  '1+ ',
+                  (colorOfProduct.length - 3).toString() + '+ ',
                   style: TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.bold,

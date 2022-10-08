@@ -177,33 +177,53 @@ class _HomeScreenState extends State<HomeScreen> {
                                         SizedBox(
                                           height: size.getHeight() * 0.01,
                                         ),
-                                        Flexible(
-                                          child: Container(
-                                            alignment: Alignment.topLeft,
-                                            width: size.getWidth() * 0.4,
-                                            padding: EdgeInsets.fromLTRB(
-                                                size.getWidth() * 0.01,
-                                                0,
-                                                size.getHeight() * 0.005,
-                                                0),
-                                            child: Text(
-                                              res['latestProduct'][i]
-                                                  ["ProductName"],
-                                              textAlign: TextAlign.end,
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize:
-                                                      17 * textScaleFactor),
-                                            ),
+                                        // Flexible(
+                                        //   child: Container(
+                                        //     alignment: Alignment.topLeft,
+                                        //     width: size.getWidth() * 0.4,
+                                        //     padding: EdgeInsets.fromLTRB(
+                                        //         size.getWidth() * 0.01,
+                                        //         0,
+                                        //         size.getHeight() * 0.005,
+                                        //         0),
+                                        //     child: Text(
+                                        //       res['latestProduct'][i]
+                                        //           ["ProductName"],
+                                        //       textAlign: TextAlign.end,
+                                        //       maxLines: 2,
+                                        //       style: TextStyle(
+                                        //           fontWeight: FontWeight.w500,
+                                        //           fontSize:
+                                        //               17 * textScaleFactor),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        Container(
+                                          height: size.getHeight() * 0.04,
+                                          width: size.getWidth(),
+                                          alignment: Alignment.topRight,
+                                          padding: EdgeInsets.only(
+                                              right: 2, left: 2),
+                                          child: Text(
+                                            res['latestProduct'][i]
+                                                ["ProductName"],
+                                            style: TextStyle(
+                                                color: Colors.black87,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 17 * textScaleFactor),
+                                            textDirection: TextDirection.ltr,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                        SizedBox(
-                                            height: size.getHeight() * 0.01),
+
                                         Container(
                                           width: size.getWidth(),
-                                          padding: EdgeInsets.fromLTRB(0, 0,
-                                              size.getHeight() * 0.005, 0),
+                                          padding: EdgeInsets.fromLTRB(
+                                              0,
+                                              0,
+                                              (size.getWidth() * 0.4) * 0.05,
+                                              0),
                                           child: Text(
                                             ((_on)
                                                 ? Price(res['latestProduct'][i]
@@ -218,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ' IQD'),
                                             style: TextStyle(
                                                 color: Colors.black54,
-                                                fontSize: 14 * textScaleFactor,
+                                                fontSize: 16 * textScaleFactor,
                                                 fontWeight: FontWeight.bold),
                                           ),
                                         )
