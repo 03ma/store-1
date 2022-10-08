@@ -174,7 +174,9 @@ class _InfoScreenState extends State<InfoScreen> {
                 height: size.getHeight() * 0.03,
               ),
               Container(
-                height: size.getHeight() * 0.15,
+                height: IsCompany
+                    ? size.getHeight() * 0.15
+                    : size.getHeight() * 0.08,
                 width: size.getWidth() * 0.9,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -225,81 +227,126 @@ class _InfoScreenState extends State<InfoScreen> {
                               size: 37,
                             ),
                             onPressed: () async {
-                              try {
-                                await UrlLauncher.launch(
-                                    "whatsapp://send?phone=964" +
-                                        FirstPhoneNumber.replaceFirst('0', '') +
-                                        "&text=مرحباً");
-                              } catch (e) {
-                                Fluttertoast.showToast(
-                                    msg: "تعذر فتح واتس اب !!",
-                                    textColor: Colors.white,
-                                    fontSize: 20 * textScaleFactor,
-                                    backgroundColor: Colors.black54,
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1);
+                              var whatsapp = "+964" +
+                                  SecendPhoneNumber.replaceFirst('0', '');
+                              var whatsappURl_android =
+                                  "whatsapp://send?phone=" +
+                                      whatsapp +
+                                      "&text=hello";
+                              var whatappURL_ios =
+                                  "https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+                              if (Platform.isIOS) {
+                                // for iOS phone only
+                                if (await UrlLauncher.canLaunch(
+                                    whatappURL_ios)) {
+                                  await UrlLauncher.launch(whatappURL_ios,
+                                      forceSafariVC: false);
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: new Text(
+                                              "whatsapp no installed")));
+                                }
+                              } else {
+                                // android , web
+                                if (await UrlLauncher.canLaunch(
+                                    whatsappURl_android)) {
+                                  await UrlLauncher.launch(whatsappURl_android);
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "تعذر فتح واتس اب !!",
+                                      textColor: Colors.white,
+                                      fontSize: 20 * textScaleFactor,
+                                      backgroundColor: Colors.black54,
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1);
+                                }
                               }
                             },
                           )
                         ],
                       ),
                     ),
-                    Container(
-                      height: size.getHeight() * 0.15 / 2,
-                      width: size.getWidth() * 0.9,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            SecendPhoneNumber,
-                            textScaleFactor: textScaleFactor,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24),
-                          ),
-                          SizedBox(
-                            width: size.getWidth() * 0.02,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.phone,
-                              color: Colors.grey,
-                              size: 37,
+                    (IsCompany)
+                        ? Container(
+                            height: size.getHeight() * 0.15 / 2,
+                            width: size.getWidth() * 0.9,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  SecendPhoneNumber,
+                                  textScaleFactor: textScaleFactor,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24),
+                                ),
+                                SizedBox(
+                                  width: size.getWidth() * 0.02,
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.phone,
+                                    color: Colors.grey,
+                                    size: 37,
+                                  ),
+                                  onPressed: () {
+                                    UrlLauncher.launch(
+                                        "tel://$SecendPhoneNumber");
+                                  },
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.whatsapp,
+                                    color: Colors.green,
+                                    size: 37,
+                                  ),
+                                  onPressed: () async {
+                                    var whatsapp = "+964" +
+                                        SecendPhoneNumber.replaceFirst('0', '');
+                                    var whatsappURl_android =
+                                        "whatsapp://send?phone=" +
+                                            whatsapp +
+                                            "&text=hello";
+                                    var whatappURL_ios =
+                                        "https://wa.me/$whatsapp?text=${Uri.parse("hello")}";
+                                    if (Platform.isIOS) {
+                                      // for iOS phone only
+                                      if (await UrlLauncher.canLaunch(
+                                          whatappURL_ios)) {
+                                        await UrlLauncher.launch(whatappURL_ios,
+                                            forceSafariVC: false);
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                content: new Text(
+                                                    "whatsapp no installed")));
+                                      }
+                                    } else {
+                                      // android , web
+                                      if (await UrlLauncher.canLaunch(
+                                          whatsappURl_android)) {
+                                        await UrlLauncher.launch(
+                                            whatsappURl_android);
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg: "تعذر فتح واتس اب !!",
+                                            textColor: Colors.white,
+                                            fontSize: 20 * textScaleFactor,
+                                            backgroundColor: Colors.black54,
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1);
+                                      }
+                                    }
+                                  },
+                                ),
+                              ],
                             ),
-                            onPressed: () {
-                              UrlLauncher.launch("tel://$SecendPhoneNumber");
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.whatsapp,
-                              color: Colors.green,
-                              size: 37,
-                            ),
-                            onPressed: () async {
-                              try {
-                                await UrlLauncher.launch(
-                                    "whatsapp://send?phone=964" +
-                                        SecendPhoneNumber.replaceFirst(
-                                            '0', '') +
-                                        "&text=مرحباً");
-                              } catch (e) {
-                                Fluttertoast.showToast(
-                                    msg: "تعذر فتح واتس اب !!",
-                                    textColor: Colors.white,
-                                    fontSize: 20 * textScaleFactor,
-                                    backgroundColor: Colors.black54,
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.BOTTOM,
-                                    timeInSecForIosWeb: 1);
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    )
+                          )
+                        : Container()
                   ],
                 ),
               ),

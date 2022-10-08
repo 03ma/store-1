@@ -187,6 +187,13 @@ class _ProductState extends State<ProductPage> {
               SizedBox(height: size.getHeight() * 0.02),
               Properties(
                 size,
+                'حجم البطارية',
+                product["BatterySize"],
+                textScaleFactor,
+              ),
+              SizedBox(height: size.getHeight() * 0.02),
+              Properties(
+                size,
                 'الذاكرة العشوائية',
                 product["Memory"]['RAM'],
                 textScaleFactor,

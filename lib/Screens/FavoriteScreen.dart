@@ -144,7 +144,6 @@ class _FavoriteState extends State<FavoriteScreen> {
                   child: Text(
                     product['ProductName'],
                     textAlign: TextAlign.end,
-                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20 * double.parse(textScaleFactor.toString()),

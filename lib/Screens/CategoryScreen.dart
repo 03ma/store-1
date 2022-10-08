@@ -191,7 +191,13 @@ class CcategoryScreenState extends State<CategoryScreen> {
                                               padding: EdgeInsets.fromLTRB(0, 0,
                                                   size.getHeight() * 0.005, 0),
                                               child: Text(
-                                                result[i]["ProductName"],
+                                                (result[i]["ProductName"]
+                                                            .length >
+                                                        17)
+                                                    ? "..." +
+                                                        result[i]["ProductName"]
+                                                            .substring(0, 17)
+                                                    : result[i]["ProductName"],
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   color: Colors.blue,

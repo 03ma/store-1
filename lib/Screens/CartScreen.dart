@@ -389,7 +389,6 @@ class _CartScreenState extends State<CartScreen> {
                       child: Text(
                         Product['ProductName'],
                         textAlign: TextAlign.end,
-                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             color: Colors.blue,
                             fontSize:

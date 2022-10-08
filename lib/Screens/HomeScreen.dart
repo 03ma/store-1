@@ -178,13 +178,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                           height: size.getHeight() * 0.01,
                                         ),
                                         Container(
-                                          width: size.getWidth(),
+                                          width: size.getWidth() * 0.4,
                                           padding: EdgeInsets.fromLTRB(0, 0,
                                               size.getHeight() * 0.005, 0),
                                           child: Text(
-                                            res['latestProduct'][i]
-                                                ["ProductName"],
-                                            overflow: TextOverflow.ellipsis,
+                                            (res['latestProduct'][i]
+                                                            ["ProductName"]
+                                                        .length >
+                                                    16)
+                                                ? "..." +
+                                                    res['latestProduct'][i]
+                                                            ["ProductName"]
+                                                        .substring(0, 16)
+                                                : res['latestProduct'][i]
+                                                    ["ProductName"],
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 17 * textScaleFactor),
