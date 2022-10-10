@@ -174,12 +174,13 @@ class _OrdersState extends State<Orders> {
                   height: (size.getHeight() * 0.18) / 3,
                   child: Text(
                     name,
-                    textAlign: TextAlign.end,
+                    textDirection: TextDirection.ltr,
+                    maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         color: Colors.blue,
                         fontSize: 20 * double.parse(textScaleFactor.toString()),
-                        fontWeight: FontWeight.w400),
+                        fontWeight: FontWeight.w500),
                   ),
                 ),
                 Container(
